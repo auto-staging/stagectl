@@ -21,6 +21,7 @@
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/url"
@@ -72,17 +73,27 @@ var getTowerConfigurationCmd = &cobra.Command{
 	Run:   getTowerConfigurationCmdFunc,
 }
 
+var getGeneralConfigurationCmd = &cobra.Command{
+	Use:   "general-configuration",
+	Short: "Get the general default configuration for new repositories",
+	Long:  `Usage:`,
+	Run:   getGeneralConfigurationCmdFunc,
+}
+
 func init() {
 	rootCmd.AddCommand(getCmd)
 	getCmd.AddCommand(getEnvironmentCmd)
 	getCmd.AddCommand(getRepositoriesCmd)
 	getCmd.AddCommand(getTowerConfigurationCmd)
+	getCmd.AddCommand(getGeneralConfigurationCmd)
 
 	getEnvironmentCmd.Flags().BoolP("enhanced", "e", false, "Enhanced output")
 	getEnvironmentCmd.Flags().StringP("limit", "l", "", "Limit output to a specific environment by branch - example: '--limit feat/new-ui'")
 
 	getRepositoriesCmd.Flags().BoolP("enhanced", "e", false, "Enhanced output")
 	getRepositoriesCmd.Flags().StringP("limit", "l", "", "Limit output to a specific repository - example: '--limit demo-app'")
+
+	getGeneralConfigurationCmd.Flags().StringP("output", "o", "yaml", "Format of the output, default is yaml - options are yaml / json")
 }
 
 func getTowerConfigurationCmdFunc(cmd *cobra.Command, args []string) {
@@ -94,6 +105,34 @@ func getTowerConfigurationCmdFunc(cmd *cobra.Command, args []string) {
 	fmt.Println("")
 	fmt.Println("LogLevel: " + fmt.Sprint(config.LogLevel))
 	fmt.Println("")
+}
+
+func getGeneralConfigurationCmdFunc(cmd *cobra.Command, args []string) {
+	config, err := model.GetGeneralConfig()
+	if err != nil {
+		log.Println(err)
+	}
+
+	switch cmd.Flag("output").Value.String() {
+	case "yaml":
+		yamlBody, err := yaml.Marshal(config)
+		if err != nil {
+			log.Println(err)
+		}
+		fmt.Println("")
+		fmt.Println(string(yamlBody))
+		fmt.Println("")
+		return
+	case "json":
+		jsonBody, err := json.MarshalIndent(config, "", "  ")
+		if err != nil {
+			log.Println(err)
+		}
+		fmt.Println("")
+		fmt.Print(string(jsonBody))
+		fmt.Println("")
+		return
+	}
 }
 
 func getRepositoriesCmdFunc(cmd *cobra.Command, args []string) {
