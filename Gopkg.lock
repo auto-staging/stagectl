@@ -2,6 +2,32 @@
 
 
 [[projects]]
+  name = "github.com/aws/aws-lambda-go"
+  packages = ["events"]
+  revision = "fb8f88d824489a878aee1e0badde7d8e129f8767"
+  version = "v1.7.0"
+
+[[projects]]
+  name = "github.com/aws/aws-sdk-go"
+  packages = [
+    "aws",
+    "aws/awserr",
+    "aws/awsutil",
+    "aws/client/metadata",
+    "aws/credentials",
+    "aws/endpoints",
+    "aws/request",
+    "aws/signer/v4",
+    "internal/ini",
+    "internal/sdkio",
+    "internal/shareddefaults",
+    "private/protocol",
+    "private/protocol/rest"
+  ]
+  revision = "333869724b050875e82f4e593488ad2464c41331"
+  version = "v1.15.83"
+
+[[projects]]
   name = "github.com/fsnotify/fsnotify"
   packages = ["."]
   revision = "c2828203cd70a50dcccfb2761f8b1f8ceef9a8e9"
@@ -31,10 +57,21 @@
   version = "v1.0"
 
 [[projects]]
+  name = "github.com/jmespath/go-jmespath"
+  packages = ["."]
+  revision = "0b12d6b5"
+
+[[projects]]
   name = "github.com/magiconair/properties"
   packages = ["."]
   revision = "c2353362d570a7bfa228149c62842019201cfb71"
   version = "v1.8.0"
+
+[[projects]]
+  name = "github.com/mattn/go-runewidth"
+  packages = ["."]
+  revision = "ce7b0b5c7b45a81508558cd1dba6bb1e4ddb51bb"
+  version = "v0.0.3"
 
 [[projects]]
   name = "github.com/mitchellh/go-homedir"
@@ -47,6 +84,12 @@
   packages = ["."]
   revision = "3536a929edddb9a5b34bd6861dc4a9647cb459fe"
   version = "v1.1.2"
+
+[[projects]]
+  name = "github.com/olekukonko/tablewriter"
+  packages = ["."]
+  revision = "e6d60cf7ba1f42d86d54cdf5508611c4aafb3970"
+  version = "v0.0.1"
 
 [[projects]]
   name = "github.com/pelletier/go-toml"
@@ -95,6 +138,12 @@
 
 [[projects]]
   branch = "master"
+  name = "gitlab.com/auto-staging/tower"
+  packages = ["types"]
+  revision = "d36634c3744718dbe75c5dbd4d89957500d1804b"
+
+[[projects]]
+  branch = "master"
   name = "golang.org/x/sys"
   packages = ["unix"]
   revision = "62eef0e2fa9b2c385f7b2778e763486da6880d37"
@@ -121,6 +170,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "7bac3de2abc6095f9c361405d8e39938cf6a2506d8011debcf3825e44a045695"
+  inputs-digest = "f0af625ea46ad3057befd6c799a2a40e61af3fd12ca2654cb9db5c422439ad5d"
   solver-name = "gps-cdcl"
   solver-version = 1
