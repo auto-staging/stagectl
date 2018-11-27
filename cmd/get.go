@@ -53,80 +53,7 @@ var getEnvironmentCmd = &cobra.Command{
 	Long: `Usage:
 
 'stagectl get environments demo-app', where demo-app is your repository`,
-	Run: func(cmd *cobra.Command, args []string) {
-		if len(args) == 0 {
-			fmt.Println("Please specify the repository you want to get the environments for, check 'stagectl get environments -h' for more info")
-			return
-		}
-		repo := args[0]
-
-		if cmd.Flag("limit").Value.String() == "" {
-			envs, err := model.GetEnvironmentsForRepo(repo)
-			if err != nil {
-				log.Println(err)
-				return
-			}
-
-			data := [][]string{}
-			table := tablewriter.NewWriter(os.Stdout)
-
-			if cmd.Flag("wide").Value.String() == "true" {
-				for _, env := range envs {
-					data = append(data, []string{env.Branch, env.CreationDate, env.Status, fmt.Sprint(env.ShutdownSchedules), fmt.Sprint(env.StartupSchedules), fmt.Sprint(env.EnvironmentVariables)})
-				}
-				table.SetHeader([]string{"Branch", "Creation_Date", "Status", "Shutdown_Schedules", "Startup_Schedules", "environment_Variables"})
-				for _, v := range data {
-					table.Append(v)
-				}
-			} else {
-				for _, env := range envs {
-					data = append(data, []string{env.Branch, env.CreationDate, env.Status, fmt.Sprint(env.ShutdownSchedules), fmt.Sprint(env.StartupSchedules)})
-				}
-				table.SetHeader([]string{"Branch", "Creation_Date", "Status", "Shutdown_Schedules", "Startup_Schedules"})
-				for _, v := range data {
-					table.Append(v)
-				}
-			}
-
-			fmt.Println("")
-			table.SetRowLine(true)
-			table.Render()
-			fmt.Println("")
-		} else {
-			branch := url.PathEscape(cmd.Flag("limit").Value.String())
-
-			env, err := model.GetSingleEnvironmentForRepo(repo, branch)
-			if err != nil {
-				log.Println(err)
-				return
-			}
-
-			data := [][]string{}
-			table := tablewriter.NewWriter(os.Stdout)
-
-			if cmd.Flag("wide").Value.String() == "true" {
-
-				data = append(data, []string{env.Branch, env.CreationDate, env.Status, fmt.Sprint(env.ShutdownSchedules), fmt.Sprint(env.StartupSchedules), fmt.Sprint(env.EnvironmentVariables)})
-
-				table.SetHeader([]string{"Branch", "Creation_Date", "Status", "Shutdown_Schedules", "Startup_Schedules", "environment_Variables"})
-				for _, v := range data {
-					table.Append(v)
-				}
-			} else {
-				data = append(data, []string{env.Branch, env.CreationDate, env.Status, fmt.Sprint(env.ShutdownSchedules), fmt.Sprint(env.StartupSchedules)})
-
-				table.SetHeader([]string{"Branch", "Creation_Date", "Status", "Shutdown_Schedules", "Startup_Schedules"})
-				for _, v := range data {
-					table.Append(v)
-				}
-			}
-
-			fmt.Println("")
-			table.SetRowLine(true)
-			table.Render()
-			fmt.Println("")
-		}
-	},
+	Run: getEnvironmentCmdFunc,
 }
 
 func init() {
@@ -135,4 +62,80 @@ func init() {
 
 	getEnvironmentCmd.Flags().BoolP("wide", "w", false, "Enhanced output")
 	getEnvironmentCmd.Flags().StringP("limit", "l", "", "Limit output to a specific environment by branch - example: '--limit feat/new-ui'")
+}
+
+func getEnvironmentCmdFunc(cmd *cobra.Command, args []string) {
+	if len(args) == 0 {
+		fmt.Println("Please specify the repository you want to get the environments for, check 'stagectl get environments -h' for more info")
+		return
+	}
+	repo := args[0]
+
+	if cmd.Flag("limit").Value.String() == "" {
+		envs, err := model.GetEnvironmentsForRepo(repo)
+		if err != nil {
+			log.Println(err)
+			return
+		}
+
+		data := [][]string{}
+		table := tablewriter.NewWriter(os.Stdout)
+
+		if cmd.Flag("wide").Value.String() == "true" {
+			for _, env := range envs {
+				data = append(data, []string{env.Branch, env.CreationDate, env.Status, fmt.Sprint(env.ShutdownSchedules), fmt.Sprint(env.StartupSchedules), fmt.Sprint(env.EnvironmentVariables)})
+			}
+			table.SetHeader([]string{"Branch", "Creation_Date", "Status", "Shutdown_Schedules", "Startup_Schedules", "environment_Variables"})
+			for _, v := range data {
+				table.Append(v)
+			}
+		} else {
+			for _, env := range envs {
+				data = append(data, []string{env.Branch, env.CreationDate, env.Status, fmt.Sprint(env.ShutdownSchedules), fmt.Sprint(env.StartupSchedules)})
+			}
+			table.SetHeader([]string{"Branch", "Creation_Date", "Status", "Shutdown_Schedules", "Startup_Schedules"})
+			for _, v := range data {
+				table.Append(v)
+			}
+		}
+
+		fmt.Println("")
+		table.SetRowLine(true)
+		table.Render()
+		fmt.Println("")
+	} else {
+		branch := url.PathEscape(cmd.Flag("limit").Value.String())
+
+		env, err := model.GetSingleEnvironmentForRepo(repo, branch)
+		if err != nil {
+			log.Println(err)
+			return
+		}
+
+		data := [][]string{}
+		table := tablewriter.NewWriter(os.Stdout)
+
+		if cmd.Flag("wide").Value.String() == "true" {
+
+			data = append(data, []string{env.Branch, env.CreationDate, env.Status, fmt.Sprint(env.ShutdownSchedules), fmt.Sprint(env.StartupSchedules), fmt.Sprint(env.EnvironmentVariables)})
+
+			table.SetHeader([]string{"Branch", "Creation_Date", "Status", "Shutdown_Schedules", "Startup_Schedules", "environment_Variables"})
+			for _, v := range data {
+				table.Append(v)
+			}
+		} else {
+			data = append(data, []string{env.Branch, env.CreationDate, env.Status, fmt.Sprint(env.ShutdownSchedules), fmt.Sprint(env.StartupSchedules)})
+
+			table.SetHeader([]string{"Branch", "Creation_Date", "Status", "Shutdown_Schedules", "Startup_Schedules"})
+			for _, v := range data {
+				table.Append(v)
+			}
+		}
+
+		fmt.Println("")
+		table.SetRowLine(true)
+		table.Render()
+		fmt.Println("")
+	}
+
 }
