@@ -65,16 +65,35 @@ var getRepositoriesCmd = &cobra.Command{
 	Run:   getRepositoriesCmdFunc,
 }
 
+var getTowerConfigurationCmd = &cobra.Command{
+	Use:   "tower-configuration",
+	Short: "Get current Tower configuration",
+	Long:  `Usage:`,
+	Run:   getTowerConfigurationCmdFunc,
+}
+
 func init() {
 	rootCmd.AddCommand(getCmd)
 	getCmd.AddCommand(getEnvironmentCmd)
 	getCmd.AddCommand(getRepositoriesCmd)
+	getCmd.AddCommand(getTowerConfigurationCmd)
 
 	getEnvironmentCmd.Flags().BoolP("enhanced", "e", false, "Enhanced output")
 	getEnvironmentCmd.Flags().StringP("limit", "l", "", "Limit output to a specific environment by branch - example: '--limit feat/new-ui'")
 
 	getRepositoriesCmd.Flags().BoolP("enhanced", "e", false, "Enhanced output")
 	getRepositoriesCmd.Flags().StringP("limit", "l", "", "Limit output to a specific repository - example: '--limit demo-app'")
+}
+
+func getTowerConfigurationCmdFunc(cmd *cobra.Command, args []string) {
+	config, err := model.GetTowerConfig()
+	if err != nil {
+		log.Println(err)
+	}
+
+	fmt.Println("")
+	fmt.Println("LogLevel: " + fmt.Sprint(config.LogLevel))
+	fmt.Println("")
 }
 
 func getRepositoriesCmdFunc(cmd *cobra.Command, args []string) {
