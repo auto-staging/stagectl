@@ -90,12 +90,12 @@ func init() {
 	getEnvironmentCmd.Flags().BoolP("enhanced", "e", false, "Enhanced output")
 	getEnvironmentCmd.Flags().StringP("limit", "l", "", "Limit output to a specific environment by branch - example: '--limit feat/new-ui'")
 
-	getRepositoriesCmd.Flags().BoolP("enhanced", "e", false, "Enhanced output")
 	getRepositoriesCmd.Flags().StringP("limit", "l", "", "Limit output to a specific repository - example: '--limit demo-app'")
+	getRepositoriesCmd.Flags().StringP("output", "o", "table", "Format of the output, options are table (limited output) / yaml / json")
 
-	getGeneralConfigurationCmd.Flags().StringP("output", "o", "yaml", "Format of the output, default is yaml - options are yaml / json")
+	getGeneralConfigurationCmd.Flags().StringP("output", "o", "yaml", "Format of the output, options are yaml / json")
 
-	getTowerConfigurationCmd.Flags().StringP("output", "o", "yaml", "Format of the output, default is yaml - options are yaml / json")
+	getTowerConfigurationCmd.Flags().StringP("output", "o", "yaml", "Format of the output, options are yaml / json")
 }
 
 func getTowerConfigurationCmdFunc(cmd *cobra.Command, args []string) {
@@ -151,75 +151,6 @@ func getGeneralConfigurationCmdFunc(cmd *cobra.Command, args []string) {
 		fmt.Print(string(jsonBody))
 		fmt.Println("")
 		return
-	}
-}
-
-func getRepositoriesCmdFunc(cmd *cobra.Command, args []string) {
-	if cmd.Flag("limit").Value.String() == "" {
-		repos, err := model.GetAllRepositories()
-		if err != nil {
-			log.Println(err)
-			return
-		}
-
-		data := [][]string{}
-		table := tablewriter.NewWriter(os.Stdout)
-
-		if cmd.Flag("enhanced").Value.String() == "true" {
-			for _, repo := range repos {
-				data = append(data, []string{repo.Repository, repo.InfrastructureRepoURL, fmt.Sprint(repo.Webhook), fmt.Sprint(repo.Filters), fmt.Sprint(repo.ShutdownSchedules), fmt.Sprint(repo.StartupSchedules), repo.CodeBuildRoleARN})
-			}
-			table.SetHeader([]string{"Repository", "InfrastructureRepoURL", "Webhook", "Filters", "ShutdownSchedules", "StartupSchedules", "CodeBuildRoleARN"})
-			for _, v := range data {
-				table.Append(v)
-			}
-		} else {
-			for _, repo := range repos {
-				data = append(data, []string{repo.Repository, repo.InfrastructureRepoURL, fmt.Sprint(repo.Webhook), fmt.Sprint(repo.Filters), fmt.Sprint(repo.ShutdownSchedules), fmt.Sprint(repo.StartupSchedules), repo.CodeBuildRoleARN})
-			}
-			table.SetHeader([]string{"Repository", "InfrastructureRepoURL", "Webhook", "Filters", "ShutdownSchedules", "StartupSchedules", "CodeBuildRoleARN"})
-			for _, v := range data {
-				table.Append(v)
-			}
-		}
-
-		fmt.Println("")
-		table.SetRowLine(true)
-		table.Render()
-		fmt.Println("")
-	} else {
-		repoName := url.PathEscape(cmd.Flag("limit").Value.String())
-
-		repo, err := model.GetSingleRepository(repoName)
-		if err != nil {
-			log.Println(err)
-			return
-		}
-
-		data := [][]string{}
-		table := tablewriter.NewWriter(os.Stdout)
-
-		if cmd.Flag("enhanced").Value.String() == "true" {
-
-			fmt.Println("")
-			yamlBody, err := yaml.Marshal(repo)
-			if err != nil {
-				log.Println(err)
-			}
-			fmt.Println(string(yamlBody))
-			fmt.Println("")
-		} else {
-			data = append(data, []string{repo.Repository, repo.InfrastructureRepoURL, fmt.Sprint(repo.Webhook), fmt.Sprint(repo.Filters), fmt.Sprint(repo.ShutdownSchedules), fmt.Sprint(repo.StartupSchedules), repo.CodeBuildRoleARN})
-
-			table.SetHeader([]string{"Repository", "InfrastructureRepoURL", "Webhook", "Filters", "ShutdownSchedules", "StartupSchedules", "CodeBuildRoleARN"})
-			for _, v := range data {
-				table.Append(v)
-			}
-			fmt.Println("")
-			table.SetRowLine(true)
-			table.Render()
-			fmt.Println("")
-		}
 	}
 }
 
