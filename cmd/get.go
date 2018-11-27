@@ -26,6 +26,8 @@ import (
 	"net/url"
 	"os"
 
+	"gopkg.in/yaml.v2"
+
 	"gitlab.com/auto-staging/stagectl/model"
 
 	"github.com/olekukonko/tablewriter"
@@ -56,12 +58,92 @@ var getEnvironmentCmd = &cobra.Command{
 	Run: getEnvironmentCmdFunc,
 }
 
+var getRepositoriesCmd = &cobra.Command{
+	Use:   "repositories",
+	Short: "Get all repositories",
+	Long:  `Usage:`,
+	Run:   getRepositoriesCmdFunc,
+}
+
 func init() {
 	rootCmd.AddCommand(getCmd)
 	getCmd.AddCommand(getEnvironmentCmd)
+	getCmd.AddCommand(getRepositoriesCmd)
 
-	getEnvironmentCmd.Flags().BoolP("wide", "w", false, "Enhanced output")
+	getEnvironmentCmd.Flags().BoolP("enhanced", "e", false, "Enhanced output")
 	getEnvironmentCmd.Flags().StringP("limit", "l", "", "Limit output to a specific environment by branch - example: '--limit feat/new-ui'")
+
+	getRepositoriesCmd.Flags().BoolP("enhanced", "e", false, "Enhanced output")
+	getRepositoriesCmd.Flags().StringP("limit", "l", "", "Limit output to a specific repository - example: '--limit demo-app'")
+}
+
+func getRepositoriesCmdFunc(cmd *cobra.Command, args []string) {
+	if cmd.Flag("limit").Value.String() == "" {
+		repos, err := model.GetAllRepositories()
+		if err != nil {
+			log.Println(err)
+			return
+		}
+
+		data := [][]string{}
+		table := tablewriter.NewWriter(os.Stdout)
+
+		if cmd.Flag("enhanced").Value.String() == "true" {
+			for _, repo := range repos {
+				data = append(data, []string{repo.Repository, repo.InfrastructureRepoURL, fmt.Sprint(repo.Webhook), fmt.Sprint(repo.Filters), fmt.Sprint(repo.ShutdownSchedules), fmt.Sprint(repo.StartupSchedules), repo.CodeBuildRoleARN})
+			}
+			table.SetHeader([]string{"Repository", "InfrastructureRepoURL", "Webhook", "Filters", "ShutdownSchedules", "StartupSchedules", "CodeBuildRoleARN"})
+			for _, v := range data {
+				table.Append(v)
+			}
+		} else {
+			for _, repo := range repos {
+				data = append(data, []string{repo.Repository, repo.InfrastructureRepoURL, fmt.Sprint(repo.Webhook), fmt.Sprint(repo.Filters), fmt.Sprint(repo.ShutdownSchedules), fmt.Sprint(repo.StartupSchedules), repo.CodeBuildRoleARN})
+			}
+			table.SetHeader([]string{"Repository", "InfrastructureRepoURL", "Webhook", "Filters", "ShutdownSchedules", "StartupSchedules", "CodeBuildRoleARN"})
+			for _, v := range data {
+				table.Append(v)
+			}
+		}
+
+		fmt.Println("")
+		table.SetRowLine(true)
+		table.Render()
+		fmt.Println("")
+	} else {
+		repoName := url.PathEscape(cmd.Flag("limit").Value.String())
+
+		repo, err := model.GetSingleRepository(repoName)
+		if err != nil {
+			log.Println(err)
+			return
+		}
+
+		data := [][]string{}
+		table := tablewriter.NewWriter(os.Stdout)
+
+		if cmd.Flag("enhanced").Value.String() == "true" {
+
+			fmt.Println("")
+			yamlBody, err := yaml.Marshal(repo)
+			if err != nil {
+				log.Println(err)
+			}
+			fmt.Println(string(yamlBody))
+			fmt.Println("")
+		} else {
+			data = append(data, []string{repo.Repository, repo.InfrastructureRepoURL, fmt.Sprint(repo.Webhook), fmt.Sprint(repo.Filters), fmt.Sprint(repo.ShutdownSchedules), fmt.Sprint(repo.StartupSchedules), repo.CodeBuildRoleARN})
+
+			table.SetHeader([]string{"Repository", "InfrastructureRepoURL", "Webhook", "Filters", "ShutdownSchedules", "StartupSchedules", "CodeBuildRoleARN"})
+			for _, v := range data {
+				table.Append(v)
+			}
+			fmt.Println("")
+			table.SetRowLine(true)
+			table.Render()
+			fmt.Println("")
+		}
+	}
 }
 
 func getEnvironmentCmdFunc(cmd *cobra.Command, args []string) {
@@ -81,7 +163,7 @@ func getEnvironmentCmdFunc(cmd *cobra.Command, args []string) {
 		data := [][]string{}
 		table := tablewriter.NewWriter(os.Stdout)
 
-		if cmd.Flag("wide").Value.String() == "true" {
+		if cmd.Flag("enhanced").Value.String() == "true" {
 			for _, env := range envs {
 				data = append(data, []string{env.Branch, env.CreationDate, env.Status, fmt.Sprint(env.ShutdownSchedules), fmt.Sprint(env.StartupSchedules), fmt.Sprint(env.EnvironmentVariables)})
 			}
@@ -115,7 +197,7 @@ func getEnvironmentCmdFunc(cmd *cobra.Command, args []string) {
 		data := [][]string{}
 		table := tablewriter.NewWriter(os.Stdout)
 
-		if cmd.Flag("wide").Value.String() == "true" {
+		if cmd.Flag("enhanced").Value.String() == "true" {
 
 			data = append(data, []string{env.Branch, env.CreationDate, env.Status, fmt.Sprint(env.ShutdownSchedules), fmt.Sprint(env.StartupSchedules), fmt.Sprint(env.EnvironmentVariables)})
 
