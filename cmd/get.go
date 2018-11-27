@@ -21,13 +21,7 @@
 package cmd
 
 import (
-	"encoding/json"
 	"fmt"
-	"log"
-
-	"gopkg.in/yaml.v2"
-
-	"gitlab.com/auto-staging/stagectl/model"
 
 	"github.com/spf13/cobra"
 )
@@ -93,60 +87,4 @@ func init() {
 	getGeneralConfigurationCmd.Flags().StringP("output", "o", "yaml", "Format of the output, options are yaml / json")
 
 	getTowerConfigurationCmd.Flags().StringP("output", "o", "yaml", "Format of the output, options are yaml / json")
-}
-
-func getTowerConfigurationCmdFunc(cmd *cobra.Command, args []string) {
-	config, err := model.GetTowerConfig()
-	if err != nil {
-		log.Println(err)
-	}
-
-	switch cmd.Flag("output").Value.String() {
-	case "yaml":
-		yamlBody, err := yaml.Marshal(config)
-		if err != nil {
-			log.Println(err)
-		}
-		fmt.Println("")
-		fmt.Println(string(yamlBody))
-		fmt.Println("")
-		return
-	case "json":
-		jsonBody, err := json.MarshalIndent(config, "", "  ")
-		if err != nil {
-			log.Println(err)
-		}
-		fmt.Println("")
-		fmt.Print(string(jsonBody))
-		fmt.Println("")
-		return
-	}
-}
-
-func getGeneralConfigurationCmdFunc(cmd *cobra.Command, args []string) {
-	config, err := model.GetGeneralConfig()
-	if err != nil {
-		log.Println(err)
-	}
-
-	switch cmd.Flag("output").Value.String() {
-	case "yaml":
-		yamlBody, err := yaml.Marshal(config)
-		if err != nil {
-			log.Println(err)
-		}
-		fmt.Println("")
-		fmt.Println(string(yamlBody))
-		fmt.Println("")
-		return
-	case "json":
-		jsonBody, err := json.MarshalIndent(config, "", "  ")
-		if err != nil {
-			log.Println(err)
-		}
-		fmt.Println("")
-		fmt.Print(string(jsonBody))
-		fmt.Println("")
-		return
-	}
 }
