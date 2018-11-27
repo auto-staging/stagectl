@@ -94,6 +94,8 @@ func init() {
 	getRepositoriesCmd.Flags().StringP("limit", "l", "", "Limit output to a specific repository - example: '--limit demo-app'")
 
 	getGeneralConfigurationCmd.Flags().StringP("output", "o", "yaml", "Format of the output, default is yaml - options are yaml / json")
+
+	getTowerConfigurationCmd.Flags().StringP("output", "o", "yaml", "Format of the output, default is yaml - options are yaml / json")
 }
 
 func getTowerConfigurationCmdFunc(cmd *cobra.Command, args []string) {
@@ -102,9 +104,26 @@ func getTowerConfigurationCmdFunc(cmd *cobra.Command, args []string) {
 		log.Println(err)
 	}
 
-	fmt.Println("")
-	fmt.Println("LogLevel: " + fmt.Sprint(config.LogLevel))
-	fmt.Println("")
+	switch cmd.Flag("output").Value.String() {
+	case "yaml":
+		yamlBody, err := yaml.Marshal(config)
+		if err != nil {
+			log.Println(err)
+		}
+		fmt.Println("")
+		fmt.Println(string(yamlBody))
+		fmt.Println("")
+		return
+	case "json":
+		jsonBody, err := json.MarshalIndent(config, "", "  ")
+		if err != nil {
+			log.Println(err)
+		}
+		fmt.Println("")
+		fmt.Print(string(jsonBody))
+		fmt.Println("")
+		return
+	}
 }
 
 func getGeneralConfigurationCmdFunc(cmd *cobra.Command, args []string) {
