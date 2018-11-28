@@ -111,3 +111,29 @@ func AddRepository(body []byte) (types.Repository, error) {
 
 	return repo, nil
 }
+
+func DeleteRepository(repoName string) error {
+	req, err := http.NewRequest("DELETE", viper.GetString("tower_base_url")+"/repositories/"+repoName, nil)
+	if err != nil {
+		return err
+	}
+
+	helper.SignRequest(req)
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != 204 {
+		body, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			return err
+		}
+		return errors.New(string(body))
+	}
+
+	return nil
+}
