@@ -32,7 +32,7 @@ var removeCmd = &cobra.Command{
 	Short: "Remove a resource",
 	Long:  `Check 'stagectl remove -h' for all available resources`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("remove called")
+		fmt.Println("Get the available subcommands / resources with 'stagectl remove -h'")
 	},
 }
 
