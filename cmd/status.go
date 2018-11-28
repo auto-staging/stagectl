@@ -23,17 +23,15 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"log"
-	"net/http"
+	"net/url"
 	"os"
 
-	"github.com/spf13/viper"
+	"gitlab.com/auto-staging/stagectl/model"
+	yaml "gopkg.in/yaml.v2"
 
 	"github.com/olekukonko/tablewriter"
 	"github.com/spf13/cobra"
-	"gitlab.com/auto-staging/stagectl/helper"
-	"gitlab.com/auto-staging/tower/types"
 )
 
 // statusCmd represents the status command
@@ -41,59 +39,115 @@ var statusCmd = &cobra.Command{
 	Use:   "status",
 	Short: "Get the status of all environments",
 	Run: func(cmd *cobra.Command, args []string) {
-		req, err := http.NewRequest("GET", viper.GetString("tower_base_url")+"/repositories/environments/status", nil)
-		if err != nil {
-			log.Println(err)
+
+		if cmd.Flag("repo").Value.String() != "" && cmd.Flag("branch").Value.String() != "" {
+			singleStatus, err := model.GetSingleStatus(cmd.Flag("repo").Value.String(), url.PathEscape(cmd.Flag("branch").Value.String()))
+			if err != nil {
+				log.Println(err)
+				return
+			}
+
+			switch cmd.Flag("output").Value.String() {
+			case "table":
+				data := [][]string{}
+
+				data = append(data, []string{singleStatus.Repository, singleStatus.Branch, singleStatus.Status})
+
+				table := tablewriter.NewWriter(os.Stdout)
+				table.SetHeader([]string{"Repository", "Branch", "Status"})
+
+				for _, v := range data {
+					table.Append(v)
+				}
+
+				table.SetColumnColor(tablewriter.Colors{tablewriter.FgWhiteColor},
+					tablewriter.Colors{tablewriter.FgWhiteColor},
+					tablewriter.Colors{tablewriter.FgWhiteColor})
+
+				fmt.Println("")
+				table.SetRowLine(true)
+				table.Render()
+				fmt.Println("")
+				return
+			case "yaml":
+				yamlBody, err := yaml.Marshal(singleStatus)
+				if err != nil {
+					log.Println(err)
+				}
+				fmt.Println("")
+				fmt.Println(string(yamlBody))
+				fmt.Println("")
+				return
+			case "json":
+				jsonBody, err := json.MarshalIndent(singleStatus, "", "  ")
+				if err != nil {
+					log.Println(err)
+				}
+				fmt.Println("")
+				fmt.Print(string(jsonBody))
+				fmt.Println("")
+				return
+			}
+			return
 		}
 
-		helper.SignRequest(req)
-
-		client := &http.Client{}
-		resp, err := client.Do(req)
+		status, err := model.GetAllStatus()
 		if err != nil {
 			log.Println(err)
+			return
 		}
-		defer resp.Body.Close()
 
-		if resp.StatusCode != 200 {
-			body, err := ioutil.ReadAll(resp.Body)
+		switch cmd.Flag("output").Value.String() {
+		case "table":
+			data := [][]string{}
+
+			for _, singleStatus := range status {
+				data = append(data, []string{singleStatus.Repository, singleStatus.Branch, singleStatus.Status})
+			}
+
+			table := tablewriter.NewWriter(os.Stdout)
+			table.SetHeader([]string{"Repository", "Branch", "Status"})
+
+			for _, v := range data {
+				table.Append(v)
+			}
+
+			table.SetColumnColor(tablewriter.Colors{tablewriter.FgWhiteColor},
+				tablewriter.Colors{tablewriter.FgWhiteColor},
+				tablewriter.Colors{tablewriter.FgWhiteColor})
+
+			fmt.Println("")
+			table.SetRowLine(true)
+			table.Render()
+			fmt.Println("")
+			return
+		case "yaml":
+			yamlBody, err := yaml.Marshal(status)
 			if err != nil {
 				log.Println(err)
 			}
-			log.Println(string(body))
+			fmt.Println("")
+			fmt.Println(string(yamlBody))
+			fmt.Println("")
+			return
+		case "json":
+			jsonBody, err := json.MarshalIndent(status, "", "  ")
+			if err != nil {
+				log.Println(err)
+			}
+			fmt.Println("")
+			fmt.Print(string(jsonBody))
+			fmt.Println("")
+			return
 		}
 
-		body, err := ioutil.ReadAll(resp.Body)
-		envs := []types.EnvironmentStatus{}
-		err = json.Unmarshal([]byte(body), &envs)
-		if err != nil {
-			log.Panicln(err)
-		}
-
-		data := [][]string{}
-
-		for _, env := range envs {
-			data = append(data, []string{env.Repository, env.Branch, env.Status})
-		}
-
-		table := tablewriter.NewWriter(os.Stdout)
-		table.SetHeader([]string{"Repository", "Branch", "Status"})
-
-		for _, v := range data {
-			table.Append(v)
-		}
-
-		table.SetColumnColor(tablewriter.Colors{tablewriter.FgWhiteColor},
-			tablewriter.Colors{tablewriter.FgWhiteColor},
-			tablewriter.Colors{tablewriter.FgWhiteColor})
-
-		fmt.Println("")
-		table.SetRowLine(true)
-		table.Render()
-		fmt.Println("")
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(statusCmd)
+
+	statusCmd.Flags().StringP("repo", "r", "", "Limit output to a specific environment by repo, also requires branch - example: '--repo demo-app'")
+	statusCmd.Flags().StringP("branch", "b", "", "Limit output to a specific environment by branch, also requires repo - example: '--branch feat/new-ui'")
+	statusCmd.Flags().StringP("output", "o", "table", "Format of the output, options are table / yaml / json")
 }
