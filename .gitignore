@@ -1,2 +1,6 @@
 # Golang
 vendor/*
+
+#Editor / IDE
+.vscode/*
+.idea/*
