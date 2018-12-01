@@ -42,9 +42,16 @@ var addRepositoryCmd = &cobra.Command{
 	Run:   addRepositoryCmdFunc,
 }
 
+var addEnvironmentCmd = &cobra.Command{
+	Use:   "environment",
+	Short: "Add an environmemt for repository",
+	Run:   addEnvironmentCmdFunc,
+}
+
 func init() {
 	rootCmd.AddCommand(addCmd)
 	addCmd.AddCommand(addRepositoryCmd)
+	addCmd.AddCommand(addEnvironmentCmd)
 
 	addRepositoryCmd.Flags().StringP("input-file", "i", ".auto-staging.json", "Filename of the repository definition")
 }

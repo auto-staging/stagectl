@@ -139,3 +139,37 @@ func DeleteSingleEnvironment(repo, branch string) error {
 
 	return nil
 }
+
+func AddEnvironment(repo string, body []byte) (types.Environment, error) {
+	req, err := http.NewRequest("POST", viper.GetString("tower_base_url")+"/repositories/"+repo+"/environments/", bytes.NewBuffer(body))
+	req.Header.Set("Content-Type", "application/json")
+	if err != nil {
+		return types.Environment{}, err
+	}
+
+	helper.SignRequest(req)
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return types.Environment{}, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != 201 {
+		body, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			return types.Environment{}, err
+		}
+		return types.Environment{}, errors.New(string(body))
+	}
+
+	respBody, err := ioutil.ReadAll(resp.Body)
+	env := types.Environment{}
+	err = json.Unmarshal([]byte(respBody), &env)
+	if err != nil {
+		return types.Environment{}, err
+	}
+
+	return env, nil
+}

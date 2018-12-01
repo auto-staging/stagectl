@@ -24,8 +24,8 @@
     "private/protocol",
     "private/protocol/rest"
   ]
-  revision = "333869724b050875e82f4e593488ad2464c41331"
-  version = "v1.15.83"
+  revision = "ceab7b7ac6f535d1397f124620720b5145f1ad59"
+  version = "v1.15.88"
 
 [[projects]]
   name = "github.com/fsnotify/fsnotify"
@@ -146,7 +146,7 @@
   branch = "master"
   name = "gitlab.com/auto-staging/tower"
   packages = ["types"]
-  revision = "d36634c3744718dbe75c5dbd4d89957500d1804b"
+  revision = "780c1410764b927d7c5f2214d784e546e2eb82e7"
 
 [[projects]]
   branch = "master"
@@ -161,7 +161,7 @@
     "unix",
     "windows"
   ]
-  revision = "62eef0e2fa9b2c385f7b2778e763486da6880d37"
+  revision = "4ed8d59d0b35e1e29334a206d1b3f38b1e5dfb31"
 
 [[projects]]
   name = "golang.org/x/text"
@@ -179,8 +179,8 @@
 [[projects]]
   name = "gopkg.in/yaml.v2"
   packages = ["."]
-  revision = "5420a8b6744d3b0345ab293f6fcba19c978f1183"
-  version = "v2.2.1"
+  revision = "51d6538a90f86fe93ac480b35f37b2be17fef232"
+  version = "v2.2.2"
 
 [solve-meta]
   analyzer-name = "dep"
