@@ -45,7 +45,16 @@ var removeRepositoryCmd = &cobra.Command{
 	Run: removeRepositoryCmdFunc,
 }
 
+var removeEnvironmentCmd = &cobra.Command{
+	Use:   "environment",
+	Short: "Remove an Environment",
+	Long: `Example:
+'stagectl remove environment demo-app feat/my-branch', where demo-app is your repository and feat/my-branch is your branch`,
+	Run: removeEnvironmentCmdFunc,
+}
+
 func init() {
 	rootCmd.AddCommand(removeCmd)
 	removeCmd.AddCommand(removeRepositoryCmd)
+	removeCmd.AddCommand(removeEnvironmentCmd)
 }
