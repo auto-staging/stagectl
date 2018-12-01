@@ -1,6 +1,7 @@
 package model
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
 	"io/ioutil"
@@ -72,6 +73,40 @@ func GetSingleEnvironmentForRepo(repo, branch string) (types.Environment, error)
 	body, err := ioutil.ReadAll(resp.Body)
 	env := types.Environment{}
 	err = json.Unmarshal([]byte(body), &env)
+	if err != nil {
+		return types.Environment{}, err
+	}
+
+	return env, nil
+}
+
+func UpdateSingleEnvironment(repo, branch string, body []byte) (types.Environment, error) {
+	req, err := http.NewRequest("PUT", viper.GetString("tower_base_url")+"/repositories/"+repo+"/environments/"+branch, bytes.NewBuffer(body))
+	req.Header.Set("Content-Type", "application/json")
+	if err != nil {
+		return types.Environment{}, err
+	}
+
+	helper.SignRequest(req)
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return types.Environment{}, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != 200 {
+		body, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			return types.Environment{}, err
+		}
+		return types.Environment{}, errors.New(string(body))
+	}
+
+	respBody, err := ioutil.ReadAll(resp.Body)
+	env := types.Environment{}
+	err = json.Unmarshal([]byte(respBody), &env)
 	if err != nil {
 		return types.Environment{}, err
 	}
