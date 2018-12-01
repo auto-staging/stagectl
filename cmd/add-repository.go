@@ -12,7 +12,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func addEnvironmentCmdFunc(cmd *cobra.Command, args []string) {
+func addRepositoryCmdFunc(cmd *cobra.Command, args []string) {
 	inputFileName := cmd.Flag("input-file").Value.String()
 
 	file, err := os.Open(inputFileName)

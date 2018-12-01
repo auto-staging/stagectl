@@ -39,7 +39,7 @@ var addCmd = &cobra.Command{
 var addRepositoryCmd = &cobra.Command{
 	Use:   "repository",
 	Short: "Add a repository",
-	Run:   addEnvironmentCmdFunc,
+	Run:   addRepositoryCmdFunc,
 }
 
 func init() {
