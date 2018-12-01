@@ -48,10 +48,17 @@ var updateEnvironmentCmd = &cobra.Command{
 	Run:   updateEnvironmentCmdFunc,
 }
 
+var updateTowerConfigurationCmd = &cobra.Command{
+	Use:   "tower-configuration",
+	Short: "Update the tower configuration",
+	Run:   updateTowerConfigurationCmdFunc,
+}
+
 func init() {
 	rootCmd.AddCommand(updateCmd)
 	updateCmd.AddCommand(updateRepositoryCmd)
 	updateCmd.AddCommand(updateEnvironmentCmd)
+	updateCmd.AddCommand(updateTowerConfigurationCmd)
 
 	updateRepositoryCmd.Flags().StringP("input-file", "i", ".auto-staging.json", "Filename of the repository definition")
 }
