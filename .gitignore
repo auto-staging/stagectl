@@ -4,3 +4,5 @@ vendor/*
 #Editor / IDE
 .vscode/*
 .idea/*
+
+.*

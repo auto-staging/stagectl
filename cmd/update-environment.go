@@ -15,8 +15,8 @@ import (
 )
 
 func updateEnvironmentCmdFunc(cmd *cobra.Command, args []string) {
-	if len(args) == 0 {
-		fmt.Println("Please specify the repository you want to get the environments for, check 'stagectl update environments -h' for more info")
+	if len(args) < 2 {
+		fmt.Println("Please specify the repository and branch you want to edit the environment for, check 'stagectl update environment -h' for more info")
 		return
 	}
 
