@@ -26,6 +26,7 @@ func updateEnvironmentCmdFunc(cmd *cobra.Command, args []string) {
 	env, err := model.GetSingleEnvironmentForRepo(repoName, url.PathEscape(branchName))
 	if err != nil {
 		log.Println(err)
+		return
 	}
 
 	envUpdate := types.EnvironmentPut{
