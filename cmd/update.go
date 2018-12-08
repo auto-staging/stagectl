@@ -21,8 +21,6 @@
 package cmd
 
 import (
-	"fmt"
-
 	"github.com/spf13/cobra"
 )
 
@@ -30,34 +28,35 @@ import (
 var updateCmd = &cobra.Command{
 	Use:   "update",
 	Short: "Update an existing resource",
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println()
-		cmd.Help()
-	},
 }
 
 var updateRepositoryCmd = &cobra.Command{
-	Use:   "repository",
-	Short: "Update an existing repository",
-	Run:   updateRepositoryCmdFunc,
+	Use:     "repository",
+	Short:   "Update an existing repository",
+	Example: "stagectl update repository",
+	Long:    "Uses the file .auto-staging.json in the current directory as fallback if not otherwise specified.",
+	Run:     updateRepositoryCmdFunc,
 }
 
 var updateEnvironmentCmd = &cobra.Command{
-	Use:   "environment",
-	Short: "Update an existing environment",
-	Run:   updateEnvironmentCmdFunc,
+	Use:     "environment",
+	Short:   "Update an existing environment",
+	Example: "stagectl update environment my-repository my-branch",
+	Run:     updateEnvironmentCmdFunc,
 }
 
 var updateTowerConfigurationCmd = &cobra.Command{
-	Use:   "tower-configuration",
-	Short: "Update the tower configuration",
-	Run:   updateTowerConfigurationCmdFunc,
+	Use:     "tower-configuration",
+	Short:   "Update the tower configuration",
+	Example: "stagectl update tower-configuration",
+	Run:     updateTowerConfigurationCmdFunc,
 }
 
 var updateGeneralConfigurationCmd = &cobra.Command{
-	Use:   "general-configuration",
-	Short: "Update the general configuration",
-	Run:   updateGeneralConfigurationCmdFunc,
+	Use:     "general-configuration",
+	Short:   "Update the general configuration",
+	Example: "stagectl update general-configuration",
+	Run:     updateGeneralConfigurationCmdFunc,
 }
 
 func init() {

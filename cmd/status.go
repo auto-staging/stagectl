@@ -36,8 +36,9 @@ import (
 
 // statusCmd represents the status command
 var statusCmd = &cobra.Command{
-	Use:   "status",
-	Short: "Get the status of all environments",
+	Use:     "status",
+	Short:   "Get the status of all environments",
+	Example: "stagectl status",
 	Run: func(cmd *cobra.Command, args []string) {
 
 		if cmd.Flag("repo").Value.String() != "" && cmd.Flag("branch").Value.String() != "" {

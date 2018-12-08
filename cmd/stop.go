@@ -33,7 +33,7 @@ var stopCmd = &cobra.Command{
 var stopEnvironmentCmd = &cobra.Command{
 	Use:     "environment",
 	Short:   "Stop the EC2 and RDS instances of a specific environment",
-	Example: "stagectl stop environment my-repository feat/my-branch",
+	Example: "stagectl stop environment my-repository my-branch",
 	Run:     stopEnvironmentCmdFunc,
 }
 

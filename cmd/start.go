@@ -33,7 +33,7 @@ var startCmd = &cobra.Command{
 var startEnvironmentCmd = &cobra.Command{
 	Use:     "environment",
 	Short:   "Start the EC2 and RDS instances of a specific environment",
-	Example: "stagectl start environment my-repository feat/my-branch",
+	Example: "stagectl start environment my-repository my-branch",
 	Run:     startEnvironmentCmdFunc,
 }
 

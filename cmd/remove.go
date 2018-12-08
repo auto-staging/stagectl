@@ -21,8 +21,6 @@
 package cmd
 
 import (
-	"fmt"
-
 	"github.com/spf13/cobra"
 )
 
@@ -30,27 +28,20 @@ import (
 var removeCmd = &cobra.Command{
 	Use:   "remove",
 	Short: "Remove a resource",
-	Long:  `Check 'stagectl remove -h' for all available resources`,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println()
-		cmd.Help()
-	},
 }
 
 var removeRepositoryCmd = &cobra.Command{
-	Use:   "repository",
-	Short: "Remove a repository",
-	Long: `Example:
-'stagectl remove repository demo-app', where demo-app is your repository`,
-	Run: removeRepositoryCmdFunc,
+	Use:     "repository",
+	Short:   "Remove a repository",
+	Example: "stagectl remove repository my-repository",
+	Run:     removeRepositoryCmdFunc,
 }
 
 var removeEnvironmentCmd = &cobra.Command{
-	Use:   "environment",
-	Short: "Remove an Environment",
-	Long: `Example:
-'stagectl remove environment demo-app feat/my-branch', where demo-app is your repository and feat/my-branch is your branch`,
-	Run: removeEnvironmentCmdFunc,
+	Use:     "environment",
+	Short:   "Remove an Environment",
+	Example: "stagectl remove environment my-repository my-branch",
+	Run:     removeEnvironmentCmdFunc,
 }
 
 func init() {

@@ -21,8 +21,6 @@
 package cmd
 
 import (
-	"fmt"
-
 	"github.com/spf13/cobra"
 )
 
@@ -30,22 +28,20 @@ import (
 var addCmd = &cobra.Command{
 	Use:   "add",
 	Short: "Add a new resource",
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println()
-		cmd.Help()
-	},
 }
 
 var addRepositoryCmd = &cobra.Command{
 	Use:   "repository",
 	Short: "Add a repository",
+	Long:  "Uses the file .auto-staging.json in the current directory as fallback if not otherwise specified.",
 	Run:   addRepositoryCmdFunc,
 }
 
 var addEnvironmentCmd = &cobra.Command{
-	Use:   "environment",
-	Short: "Add an environmemt for repository",
-	Run:   addEnvironmentCmdFunc,
+	Use:     "environment",
+	Short:   "Add an environmemt for repository",
+	Example: "stagectl add environment my-repository",
+	Run:     addEnvironmentCmdFunc,
 }
 
 func init() {

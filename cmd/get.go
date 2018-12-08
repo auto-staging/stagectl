@@ -21,8 +21,6 @@
 package cmd
 
 import (
-	"fmt"
-
 	"github.com/spf13/cobra"
 )
 
@@ -30,40 +28,34 @@ import (
 var getCmd = &cobra.Command{
 	Use:   "get",
 	Short: "Get information about a specific resource",
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println()
-		cmd.Help()
-	},
 }
 
 var getEnvironmentCmd = &cobra.Command{
-	Use:   "environments",
-	Short: "Get all environments for a repository",
-	Long: `Usage:
-
-'stagectl get environments demo-app', where demo-app is your repository`,
-	Run: getEnvironmentCmdFunc,
+	Use:     "environments",
+	Short:   "Get all environments for a repository",
+	Example: "stagectl get environments my-repository",
+	Run:     getEnvironmentCmdFunc,
 }
 
 var getRepositoriesCmd = &cobra.Command{
-	Use:   "repositories",
-	Short: "Get all repositories",
-	Long:  `Usage:`,
-	Run:   getRepositoriesCmdFunc,
+	Use:     "repositories",
+	Short:   "Get all repositories",
+	Example: "stagectl get repositories",
+	Run:     getRepositoriesCmdFunc,
 }
 
 var getTowerConfigurationCmd = &cobra.Command{
-	Use:   "tower-configuration",
-	Short: "Get current Tower configuration",
-	Long:  `Usage:`,
-	Run:   getTowerConfigurationCmdFunc,
+	Use:     "tower-configuration",
+	Short:   "Get current Tower configuration",
+	Example: "stagectl get tower-configuration",
+	Run:     getTowerConfigurationCmdFunc,
 }
 
 var getGeneralConfigurationCmd = &cobra.Command{
-	Use:   "general-configuration",
-	Short: "Get the general default configuration for new repositories",
-	Long:  `Usage:`,
-	Run:   getGeneralConfigurationCmdFunc,
+	Use:     "general-configuration",
+	Short:   "Get the general default configuration for new repositories",
+	Example: "stagectl get general-configuration",
+	Run:     getGeneralConfigurationCmdFunc,
 }
 
 func init() {
