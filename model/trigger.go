@@ -2,7 +2,6 @@ package model
 
 import (
 	"bytes"
-	"errors"
 	"io/ioutil"
 	"net/http"
 
@@ -31,7 +30,8 @@ func TriggerSchedule(body []byte) error {
 		if err != nil {
 			return err
 		}
-		return errors.New(string(body))
+		helper.PrintApiError(body)
+		return err
 	}
 
 	return nil

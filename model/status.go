@@ -2,7 +2,6 @@ package model
 
 import (
 	"encoding/json"
-	"errors"
 	"io/ioutil"
 	"net/http"
 
@@ -31,7 +30,8 @@ func GetAllStatus() ([]types.EnvironmentStatus, error) {
 		if err != nil {
 			return []types.EnvironmentStatus{}, err
 		}
-		return []types.EnvironmentStatus{}, errors.New(string(body))
+		helper.PrintApiError(body)
+		return []types.EnvironmentStatus{}, err
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
@@ -64,7 +64,8 @@ func GetSingleStatus(repo, branch string) (types.EnvironmentStatus, error) {
 		if err != nil {
 			return types.EnvironmentStatus{}, err
 		}
-		return types.EnvironmentStatus{}, errors.New(string(body))
+		helper.PrintApiError(body)
+		return types.EnvironmentStatus{}, err
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)

@@ -3,7 +3,6 @@ package model
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
 	"io/ioutil"
 	"net/http"
 
@@ -32,7 +31,8 @@ func GetAllRepositories() ([]types.Repository, error) {
 		if err != nil {
 			return []types.Repository{}, err
 		}
-		return []types.Repository{}, errors.New(string(body))
+		helper.PrintApiError(body)
+		return []types.Repository{}, err
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
@@ -65,7 +65,8 @@ func GetSingleRepository(repoName string) (types.Repository, error) {
 		if err != nil {
 			return types.Repository{}, err
 		}
-		return types.Repository{}, errors.New(string(body))
+		helper.PrintApiError(body)
+		return types.Repository{}, err
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
@@ -99,7 +100,8 @@ func AddRepository(body []byte) (types.Repository, error) {
 		if err != nil {
 			return types.Repository{}, err
 		}
-		return types.Repository{}, errors.New(string(body))
+		helper.PrintApiError(body)
+		return types.Repository{}, err
 	}
 
 	respBody, err := ioutil.ReadAll(resp.Body)
@@ -132,7 +134,8 @@ func DeleteRepository(repoName string) error {
 		if err != nil {
 			return err
 		}
-		return errors.New(string(body))
+		helper.PrintApiError(body)
+		return err
 	}
 
 	return nil
@@ -159,7 +162,8 @@ func UpdateRepository(body []byte, repoName string) (types.Repository, error) {
 		if err != nil {
 			return types.Repository{}, err
 		}
-		return types.Repository{}, errors.New(string(body))
+		helper.PrintApiError(body)
+		return types.Repository{}, err
 	}
 
 	respBody, err := ioutil.ReadAll(resp.Body)

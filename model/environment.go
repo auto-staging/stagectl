@@ -3,7 +3,6 @@ package model
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
 	"io/ioutil"
 	"net/http"
 
@@ -33,7 +32,8 @@ func GetEnvironmentsForRepo(repo string) ([]types.Environment, error) {
 		if err != nil {
 			return []types.Environment{}, err
 		}
-		return []types.Environment{}, errors.New(string(body))
+		helper.PrintApiError(body)
+		return []types.Environment{}, err
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
@@ -67,7 +67,8 @@ func GetSingleEnvironmentForRepo(repo, branch string) (types.Environment, error)
 		if err != nil {
 			return types.Environment{}, err
 		}
-		return types.Environment{}, errors.New(string(body))
+		helper.PrintApiError(body)
+		return types.Environment{}, err
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
@@ -101,7 +102,8 @@ func UpdateSingleEnvironment(repo, branch string, body []byte) (types.Environmen
 		if err != nil {
 			return types.Environment{}, err
 		}
-		return types.Environment{}, errors.New(string(body))
+		helper.PrintApiError(body)
+		return types.Environment{}, err
 	}
 
 	respBody, err := ioutil.ReadAll(resp.Body)
@@ -134,7 +136,8 @@ func DeleteSingleEnvironment(repo, branch string) error {
 		if err != nil {
 			return err
 		}
-		return errors.New(string(body))
+		helper.PrintApiError(body)
+		return err
 	}
 
 	return nil
@@ -161,7 +164,8 @@ func AddEnvironment(repo string, body []byte) (types.Environment, error) {
 		if err != nil {
 			return types.Environment{}, err
 		}
-		return types.Environment{}, errors.New(string(body))
+		helper.PrintApiError(body)
+		return types.Environment{}, err
 	}
 
 	respBody, err := ioutil.ReadAll(resp.Body)

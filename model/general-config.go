@@ -3,7 +3,6 @@ package model
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
 	"io/ioutil"
 	"net/http"
 
@@ -32,7 +31,8 @@ func GetGeneralConfig() (types.GeneralConfig, error) {
 		if err != nil {
 			return types.GeneralConfig{}, err
 		}
-		return types.GeneralConfig{}, errors.New(string(body))
+		helper.PrintApiError(body)
+		return types.GeneralConfig{}, err
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
@@ -66,7 +66,8 @@ func UpdateGeneralConfiguration(body []byte) (types.GeneralConfig, error) {
 		if err != nil {
 			return types.GeneralConfig{}, err
 		}
-		return types.GeneralConfig{}, errors.New(string(body))
+		helper.PrintApiError(body)
+		return types.GeneralConfig{}, err
 	}
 
 	respBody, err := ioutil.ReadAll(resp.Body)

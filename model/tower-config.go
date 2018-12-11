@@ -3,7 +3,6 @@ package model
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
 	"io/ioutil"
 	"net/http"
 
@@ -32,7 +31,8 @@ func GetTowerConfig() (types.TowerConfiguration, error) {
 		if err != nil {
 			return types.TowerConfiguration{}, err
 		}
-		return types.TowerConfiguration{}, errors.New(string(body))
+		helper.PrintApiError(body)
+		return types.TowerConfiguration{}, err
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
@@ -66,7 +66,8 @@ func UpdateTowerConfiguration(body []byte) (types.TowerConfiguration, error) {
 		if err != nil {
 			return types.TowerConfiguration{}, err
 		}
-		return types.TowerConfiguration{}, errors.New(string(body))
+		helper.PrintApiError(body)
+		return types.TowerConfiguration{}, err
 	}
 
 	respBody, err := ioutil.ReadAll(resp.Body)
