@@ -31,7 +31,7 @@ func GetGeneralConfig() (types.GeneralConfig, error) {
 		if err != nil {
 			return types.GeneralConfig{}, err
 		}
-		helper.PrintApiError(body)
+		helper.PrintAPIError(body)
 		return types.GeneralConfig{}, err
 	}
 
@@ -66,7 +66,7 @@ func UpdateGeneralConfiguration(body []byte) (types.GeneralConfig, error) {
 		if err != nil {
 			return types.GeneralConfig{}, err
 		}
-		helper.PrintApiError(body)
+		helper.PrintAPIError(body)
 		return types.GeneralConfig{}, err
 	}
 

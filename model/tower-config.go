@@ -31,7 +31,7 @@ func GetTowerConfig() (types.TowerConfiguration, error) {
 		if err != nil {
 			return types.TowerConfiguration{}, err
 		}
-		helper.PrintApiError(body)
+		helper.PrintAPIError(body)
 		return types.TowerConfiguration{}, err
 	}
 
@@ -66,7 +66,7 @@ func UpdateTowerConfiguration(body []byte) (types.TowerConfiguration, error) {
 		if err != nil {
 			return types.TowerConfiguration{}, err
 		}
-		helper.PrintApiError(body)
+		helper.PrintAPIError(body)
 		return types.TowerConfiguration{}, err
 	}
 

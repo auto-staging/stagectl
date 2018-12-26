@@ -32,7 +32,7 @@ func GetEnvironmentsForRepo(repo string) ([]types.Environment, error) {
 		if err != nil {
 			return []types.Environment{}, err
 		}
-		helper.PrintApiError(body)
+		helper.PrintAPIError(body)
 		return []types.Environment{}, err
 	}
 
@@ -67,7 +67,7 @@ func GetSingleEnvironmentForRepo(repo, branch string) (types.Environment, error)
 		if err != nil {
 			return types.Environment{}, err
 		}
-		helper.PrintApiError(body)
+		helper.PrintAPIError(body)
 		return types.Environment{}, err
 	}
 
@@ -102,7 +102,7 @@ func UpdateSingleEnvironment(repo, branch string, body []byte) (types.Environmen
 		if err != nil {
 			return types.Environment{}, err
 		}
-		helper.PrintApiError(body)
+		helper.PrintAPIError(body)
 		return types.Environment{}, err
 	}
 
@@ -136,7 +136,7 @@ func DeleteSingleEnvironment(repo, branch string) error {
 		if err != nil {
 			return err
 		}
-		helper.PrintApiError(body)
+		helper.PrintAPIError(body)
 		return err
 	}
 
@@ -164,7 +164,7 @@ func AddEnvironment(repo string, body []byte) (types.Environment, error) {
 		if err != nil {
 			return types.Environment{}, err
 		}
-		helper.PrintApiError(body)
+		helper.PrintAPIError(body)
 		return types.Environment{}, err
 	}
 

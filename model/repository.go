@@ -31,7 +31,7 @@ func GetAllRepositories() ([]types.Repository, error) {
 		if err != nil {
 			return []types.Repository{}, err
 		}
-		helper.PrintApiError(body)
+		helper.PrintAPIError(body)
 		return []types.Repository{}, err
 	}
 
@@ -65,7 +65,7 @@ func GetSingleRepository(repoName string) (types.Repository, error) {
 		if err != nil {
 			return types.Repository{}, err
 		}
-		helper.PrintApiError(body)
+		helper.PrintAPIError(body)
 		return types.Repository{}, err
 	}
 
@@ -100,7 +100,7 @@ func AddRepository(body []byte) (types.Repository, error) {
 		if err != nil {
 			return types.Repository{}, err
 		}
-		helper.PrintApiError(body)
+		helper.PrintAPIError(body)
 		return types.Repository{}, err
 	}
 
@@ -134,7 +134,7 @@ func DeleteRepository(repoName string) error {
 		if err != nil {
 			return err
 		}
-		helper.PrintApiError(body)
+		helper.PrintAPIError(body)
 		return err
 	}
 
@@ -162,7 +162,7 @@ func UpdateRepository(body []byte, repoName string) (types.Repository, error) {
 		if err != nil {
 			return types.Repository{}, err
 		}
-		helper.PrintApiError(body)
+		helper.PrintAPIError(body)
 		return types.Repository{}, err
 	}
 

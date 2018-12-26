@@ -30,7 +30,7 @@ func TriggerSchedule(body []byte) error {
 		if err != nil {
 			return err
 		}
-		helper.PrintApiError(body)
+		helper.PrintAPIError(body)
 		return err
 	}
 

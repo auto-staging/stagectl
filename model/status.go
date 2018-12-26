@@ -30,7 +30,7 @@ func GetAllStatus() ([]types.EnvironmentStatus, error) {
 		if err != nil {
 			return []types.EnvironmentStatus{}, err
 		}
-		helper.PrintApiError(body)
+		helper.PrintAPIError(body)
 		return []types.EnvironmentStatus{}, err
 	}
 
@@ -64,7 +64,7 @@ func GetSingleStatus(repo, branch string) (types.EnvironmentStatus, error) {
 		if err != nil {
 			return types.EnvironmentStatus{}, err
 		}
-		helper.PrintApiError(body)
+		helper.PrintAPIError(body)
 		return types.EnvironmentStatus{}, err
 	}
 
