@@ -10,6 +10,8 @@ import (
 	"gitlab.com/auto-staging/tower/types"
 )
 
+// AskForGeneralConfigUpdateInput sets the current general Repository configuration as default and asks the user for new (updated) values.
+// The updated values will be written back to the GeneralConfig struct (call by reference)
 func AskForGeneralConfigUpdateInput(config *types.GeneralConfig) {
 	ui := &input.UI{
 		Writer: os.Stdout,

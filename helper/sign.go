@@ -11,6 +11,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws/signer/v4"
 )
 
+// SignRequest signs the Tower API request with AWS Signature v4 by using the local AWS IAM access key and secret access key.
 func SignRequest(req *http.Request) {
 	signer := v4.NewSigner(credentials.NewSharedCredentials("", "default"))
 

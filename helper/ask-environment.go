@@ -10,6 +10,8 @@ import (
 	"gitlab.com/auto-staging/tower/types"
 )
 
+// AskForEnvironmentUpdateInput sets the current Environment configuration as default and asks the user for new (updated) values.
+// The updated values will be written back to the EnvironmentPut struct (call by reference)
 func AskForEnvironmentUpdateInput(env *types.EnvironmentPut) {
 	ui := &input.UI{
 		Writer: os.Stdout,
@@ -309,6 +311,8 @@ func AskForEnvironmentUpdateInput(env *types.EnvironmentPut) {
 	}
 }
 
+// AskForEnvironmentAddInput asks the user for values used in the new Environment.
+// The updated values will be written back to the EnvironmentPost struct (call by reference)
 func AskForEnvironmentAddInput(env *types.EnvironmentPost) {
 	ui := &input.UI{
 		Writer: os.Stdout,

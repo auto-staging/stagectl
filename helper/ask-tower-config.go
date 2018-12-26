@@ -9,6 +9,8 @@ import (
 	"gitlab.com/auto-staging/tower/types"
 )
 
+// AskForTowerConfigUpdateInput sets the current Tower configuration as default and asks the user for new (updated) values.
+// The updated values will be written back to the TowerConfiguration struct (call by reference)
 func AskForTowerConfigUpdateInput(config *types.TowerConfiguration) {
 	ui := &input.UI{
 		Writer: os.Stdout,

@@ -7,6 +7,7 @@ import (
 	"gitlab.com/auto-staging/stagectl/types"
 )
 
+// PrintApiError unmarshals the Tower API error body and prints the error message to console
 func PrintApiError(body []byte) {
 	apiError := types.ApiErrorResponse{}
 	err := json.Unmarshal(body, &apiError)
