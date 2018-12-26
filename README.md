@@ -2,19 +2,25 @@
 
 ## Usage
 
-#### Install dependencies
-```
+### Install dependencies
+
+```bash
 make prepare
 ```
-#### Run application
-```
+
+### Run application
+
+```bash
 make run
 ```
-#### Build binary
-```
+
+### Build binary
+
+```bash
 make build
 ```
-compiles to bin folder 
+
+compiles to bin folder
 
 ## License and Author
 
