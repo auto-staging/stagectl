@@ -11,7 +11,8 @@ import (
 	"gitlab.com/auto-staging/tower/types"
 )
 
-// GetEnvironmentsForRepo returns an array of Environment structs and an error for all Environments of the repository
+// GetEnvironmentsForRepo calls the Tower API - GET /repositories/{name}/environments.
+// If an error occurs the error gets returned, otherwise an array of Environment structs get returned.
 func GetEnvironmentsForRepo(repo string) ([]types.Environment, error) {
 	req, err := http.NewRequest("GET", viper.GetString("tower_base_url")+"/repositories/"+repo+"/environments", nil)
 	if err != nil {
@@ -46,7 +47,8 @@ func GetEnvironmentsForRepo(repo string) ([]types.Environment, error) {
 	return envs, nil
 }
 
-// GetSingleEnvironmentForRepo returns an Environment struct and error for a single Environment based on repo and branch
+// GetSingleEnvironmentForRepo calls the Tower API - GET /repositories/{name}/environments/{branch}.
+// If an error occurs the error gets returned, otherwise an Environment struct gets returned.
 func GetSingleEnvironmentForRepo(repo, branch string) (types.Environment, error) {
 	req, err := http.NewRequest("GET", viper.GetString("tower_base_url")+"/repositories/"+repo+"/environments/"+branch, nil)
 	if err != nil {
@@ -81,6 +83,8 @@ func GetSingleEnvironmentForRepo(repo, branch string) (types.Environment, error)
 	return env, nil
 }
 
+// UpdateSingleEnvironment calls the Tower API - PUT /repositories/{name}/environments/{branch}.
+// If an error occurs the error gets returned, otherwise an Environment struct gets returned.
 func UpdateSingleEnvironment(repo, branch string, body []byte) (types.Environment, error) {
 	req, err := http.NewRequest("PUT", viper.GetString("tower_base_url")+"/repositories/"+repo+"/environments/"+branch, bytes.NewBuffer(body))
 	req.Header.Set("Content-Type", "application/json")
@@ -116,6 +120,8 @@ func UpdateSingleEnvironment(repo, branch string, body []byte) (types.Environmen
 	return env, nil
 }
 
+// DeleteSingleEnvironment calls the Tower API - DELETE /repositories/{name}/environments/{branch}.
+// If an error occurs the error gets returned.
 func DeleteSingleEnvironment(repo, branch string) error {
 	req, err := http.NewRequest("DELETE", viper.GetString("tower_base_url")+"/repositories/"+repo+"/environments/"+branch, nil)
 	if err != nil {
@@ -143,6 +149,8 @@ func DeleteSingleEnvironment(repo, branch string) error {
 	return nil
 }
 
+// AddEnvironment calls the Tower API - POST /repositories/{name}/environments/{branch}.
+// If an error occurs the error gets returned, otherwise an Environment struct gets returned.
 func AddEnvironment(repo string, body []byte) (types.Environment, error) {
 	req, err := http.NewRequest("POST", viper.GetString("tower_base_url")+"/repositories/"+repo+"/environments/", bytes.NewBuffer(body))
 	req.Header.Set("Content-Type", "application/json")

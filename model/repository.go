@@ -11,6 +11,8 @@ import (
 	"gitlab.com/auto-staging/tower/types"
 )
 
+// GetAllRepositories calls the Tower API - GET /repositories.
+// If an error occurs the error gets returned, otherwise an array of Repository structs gets returned.
 func GetAllRepositories() ([]types.Repository, error) {
 	req, err := http.NewRequest("GET", viper.GetString("tower_base_url")+"/repositories", nil)
 	if err != nil {
@@ -45,6 +47,8 @@ func GetAllRepositories() ([]types.Repository, error) {
 	return repos, nil
 }
 
+// GetSingleRepository calls the Tower API - GET /repositories/{name}.
+// If an error occurs the error gets returned, otherwise a Repository struct gets returned.
 func GetSingleRepository(repoName string) (types.Repository, error) {
 	req, err := http.NewRequest("GET", viper.GetString("tower_base_url")+"/repositories/"+repoName, nil)
 	if err != nil {
@@ -79,6 +83,8 @@ func GetSingleRepository(repoName string) (types.Repository, error) {
 	return repo, nil
 }
 
+// AddRepository calls the Tower API - POST /repositories.
+// If an error occurs the error gets returned, otherwise a Repository struct gets returned.
 func AddRepository(body []byte) (types.Repository, error) {
 	req, err := http.NewRequest("POST", viper.GetString("tower_base_url")+"/repositories", bytes.NewBuffer(body))
 	req.Header.Set("Content-Type", "application/json")
@@ -114,6 +120,8 @@ func AddRepository(body []byte) (types.Repository, error) {
 	return repo, nil
 }
 
+// DeleteRepository calls the Tower API - DELETE /repositories/{name}.
+// If an error occurs the error gets returned, otherwise a Repository struct gets returned.
 func DeleteRepository(repoName string) error {
 	req, err := http.NewRequest("DELETE", viper.GetString("tower_base_url")+"/repositories/"+repoName, nil)
 	if err != nil {
@@ -141,6 +149,8 @@ func DeleteRepository(repoName string) error {
 	return nil
 }
 
+// UpdateRepository calls the Tower API - PUT /repositories/{name}.
+// If an error occurs the error gets returned, otherwise a Repository struct gets returned.
 func UpdateRepository(body []byte, repoName string) (types.Repository, error) {
 	req, err := http.NewRequest("PUT", viper.GetString("tower_base_url")+"/repositories/"+repoName, bytes.NewBuffer(body))
 	req.Header.Set("Content-Type", "application/json")

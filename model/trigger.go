@@ -9,6 +9,8 @@ import (
 	"gitlab.com/auto-staging/stagectl/helper"
 )
 
+// TriggerSchedule calls the Tower API - POST /triggers/schedule.
+// If an error occurs the error gets returned.
 func TriggerSchedule(body []byte) error {
 	req, err := http.NewRequest("POST", viper.GetString("tower_base_url")+"/triggers/schedule", bytes.NewBuffer(body))
 	req.Header.Set("Content-Type", "application/json")

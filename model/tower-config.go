@@ -11,6 +11,8 @@ import (
 	"gitlab.com/auto-staging/tower/types"
 )
 
+// GetTowerConfig calls the Tower API - GET /configuration.
+// If an error occurs the error gets returned, otherwise a TowerConfiguration struct gets returned.
 func GetTowerConfig() (types.TowerConfiguration, error) {
 	req, err := http.NewRequest("GET", viper.GetString("tower_base_url")+"/configuration", nil)
 	if err != nil {
@@ -45,6 +47,8 @@ func GetTowerConfig() (types.TowerConfiguration, error) {
 	return config, nil
 }
 
+// UpdateTowerConfiguration calls the Tower API - PUT /configuration.
+// If an error occurs the error gets returned, otherwise a TowerConfiguration struct gets returned.
 func UpdateTowerConfiguration(body []byte) (types.TowerConfiguration, error) {
 	req, err := http.NewRequest("PUT", viper.GetString("tower_base_url")+"/configuration", bytes.NewBuffer(body))
 	req.Header.Set("Content-Type", "application/json")
