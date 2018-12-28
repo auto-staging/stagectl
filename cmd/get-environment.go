@@ -3,7 +3,6 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/url"
 	"os"
 
@@ -17,7 +16,7 @@ import (
 func getEnvironmentCmdFunc(cmd *cobra.Command, args []string) {
 	if len(args) == 0 {
 		fmt.Println("Please specify the repository you want to get the environments for, check 'stagectl get environments -h' for more info")
-		return
+		os.Exit(1)
 	}
 	output := cmd.Flag("output").Value.String()
 	repo := args[0]
@@ -25,8 +24,7 @@ func getEnvironmentCmdFunc(cmd *cobra.Command, args []string) {
 	if cmd.Flag("limit").Value.String() == "" {
 		envs, err := model.GetEnvironmentsForRepo(repo)
 		if err != nil {
-			log.Println(err)
-			return
+			os.Exit(1)
 		}
 		outputEnvironmentsArray(envs, output)
 
@@ -35,8 +33,7 @@ func getEnvironmentCmdFunc(cmd *cobra.Command, args []string) {
 
 		env, err := model.GetSingleEnvironmentForRepo(repo, branch)
 		if err != nil {
-			log.Println(err)
-			return
+			os.Exit(1)
 		}
 		outputEnvironment(env, output)
 
@@ -65,7 +62,7 @@ func outputEnvironmentsArray(envs []types.Environment, format string) {
 	case "json":
 		jsonBody, err := json.MarshalIndent(envs, "", "  ")
 		if err != nil {
-			log.Println(err)
+			os.Exit(1)
 		}
 		fmt.Println("")
 		fmt.Print(string(jsonBody))
@@ -74,7 +71,7 @@ func outputEnvironmentsArray(envs []types.Environment, format string) {
 	case "yaml":
 		yamlBody, err := yaml.Marshal(envs)
 		if err != nil {
-			log.Println(err)
+			os.Exit(1)
 		}
 		fmt.Println("")
 		fmt.Println(string(yamlBody))
@@ -102,7 +99,7 @@ func outputEnvironment(env types.Environment, format string) {
 	case "json":
 		jsonBody, err := json.MarshalIndent(env, "", "  ")
 		if err != nil {
-			log.Println(err)
+			os.Exit(1)
 		}
 		fmt.Println("")
 		fmt.Print(string(jsonBody))
@@ -112,7 +109,7 @@ func outputEnvironment(env types.Environment, format string) {
 	case "yaml":
 		yamlBody, err := yaml.Marshal(env)
 		if err != nil {
-			log.Println(err)
+			os.Exit(1)
 		}
 		fmt.Println("")
 		fmt.Println(string(yamlBody))
