@@ -3,11 +3,9 @@ package model
 import (
 	"bytes"
 	"encoding/json"
-	"io/ioutil"
 	"net/http"
 
 	"github.com/spf13/viper"
-	"gitlab.com/auto-staging/stagectl/helper"
 	"gitlab.com/auto-staging/tower/types"
 )
 
@@ -19,27 +17,13 @@ func GetTowerConfig() (types.TowerConfiguration, error) {
 		return types.TowerConfiguration{}, err
 	}
 
-	helper.SignRequest(req)
-
-	client := &http.Client{}
-	resp, err := client.Do(req)
+	result, err := sendRequest(req, 200)
 	if err != nil {
 		return types.TowerConfiguration{}, err
 	}
-	defer resp.Body.Close()
 
-	if resp.StatusCode != 200 {
-		body, err := ioutil.ReadAll(resp.Body)
-		if err != nil {
-			return types.TowerConfiguration{}, err
-		}
-		helper.PrintAPIError(body)
-		return types.TowerConfiguration{}, err
-	}
-
-	body, err := ioutil.ReadAll(resp.Body)
 	config := types.TowerConfiguration{}
-	err = json.Unmarshal([]byte(body), &config)
+	err = json.Unmarshal(result, &config)
 	if err != nil {
 		return types.TowerConfiguration{}, err
 	}
@@ -56,27 +40,13 @@ func UpdateTowerConfiguration(body []byte) (types.TowerConfiguration, error) {
 		return types.TowerConfiguration{}, err
 	}
 
-	helper.SignRequest(req)
-
-	client := &http.Client{}
-	resp, err := client.Do(req)
+	result, err := sendRequest(req, 200)
 	if err != nil {
 		return types.TowerConfiguration{}, err
 	}
-	defer resp.Body.Close()
 
-	if resp.StatusCode != 200 {
-		body, err := ioutil.ReadAll(resp.Body)
-		if err != nil {
-			return types.TowerConfiguration{}, err
-		}
-		helper.PrintAPIError(body)
-		return types.TowerConfiguration{}, err
-	}
-
-	respBody, err := ioutil.ReadAll(resp.Body)
 	config := types.TowerConfiguration{}
-	err = json.Unmarshal([]byte(respBody), &config)
+	err = json.Unmarshal(result, &config)
 	if err != nil {
 		return types.TowerConfiguration{}, err
 	}

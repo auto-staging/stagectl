@@ -85,11 +85,8 @@ func DeleteSingleEnvironment(repo, branch string) error {
 	}
 
 	_, err = sendRequest(req, 202)
-	if err != nil {
-		return err
-	}
 
-	return nil
+	return err
 }
 
 // AddEnvironment calls the Tower API - POST /repositories/{name}/environments/{branch}.

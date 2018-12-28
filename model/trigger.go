@@ -2,11 +2,9 @@ package model
 
 import (
 	"bytes"
-	"io/ioutil"
 	"net/http"
 
 	"github.com/spf13/viper"
-	"gitlab.com/auto-staging/stagectl/helper"
 )
 
 // TriggerSchedule calls the Tower API - POST /triggers/schedule.
@@ -18,23 +16,7 @@ func TriggerSchedule(body []byte) error {
 		return err
 	}
 
-	helper.SignRequest(req)
+	_, err = sendRequest(req, 200)
 
-	client := &http.Client{}
-	resp, err := client.Do(req)
-	if err != nil {
-		return err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != 200 {
-		body, err := ioutil.ReadAll(resp.Body)
-		if err != nil {
-			return err
-		}
-		helper.PrintAPIError(body)
-		return err
-	}
-
-	return nil
+	return err
 }

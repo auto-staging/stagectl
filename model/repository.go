@@ -3,11 +3,9 @@ package model
 import (
 	"bytes"
 	"encoding/json"
-	"io/ioutil"
 	"net/http"
 
 	"github.com/spf13/viper"
-	"gitlab.com/auto-staging/stagectl/helper"
 	"gitlab.com/auto-staging/tower/types"
 )
 
@@ -19,27 +17,13 @@ func GetAllRepositories() ([]types.Repository, error) {
 		return []types.Repository{}, err
 	}
 
-	helper.SignRequest(req)
-
-	client := &http.Client{}
-	resp, err := client.Do(req)
+	result, err := sendRequest(req, 200)
 	if err != nil {
 		return []types.Repository{}, err
 	}
-	defer resp.Body.Close()
 
-	if resp.StatusCode != 200 {
-		body, err := ioutil.ReadAll(resp.Body)
-		if err != nil {
-			return []types.Repository{}, err
-		}
-		helper.PrintAPIError(body)
-		return []types.Repository{}, err
-	}
-
-	body, err := ioutil.ReadAll(resp.Body)
 	repos := []types.Repository{}
-	err = json.Unmarshal([]byte(body), &repos)
+	err = json.Unmarshal(result, &repos)
 	if err != nil {
 		return []types.Repository{}, err
 	}
@@ -55,27 +39,13 @@ func GetSingleRepository(repoName string) (types.Repository, error) {
 		return types.Repository{}, err
 	}
 
-	helper.SignRequest(req)
-
-	client := &http.Client{}
-	resp, err := client.Do(req)
+	result, err := sendRequest(req, 200)
 	if err != nil {
 		return types.Repository{}, err
 	}
-	defer resp.Body.Close()
 
-	if resp.StatusCode != 200 {
-		body, err := ioutil.ReadAll(resp.Body)
-		if err != nil {
-			return types.Repository{}, err
-		}
-		helper.PrintAPIError(body)
-		return types.Repository{}, err
-	}
-
-	body, err := ioutil.ReadAll(resp.Body)
 	repo := types.Repository{}
-	err = json.Unmarshal([]byte(body), &repo)
+	err = json.Unmarshal(result, &repo)
 	if err != nil {
 		return types.Repository{}, err
 	}
@@ -92,27 +62,13 @@ func AddRepository(body []byte) (types.Repository, error) {
 		return types.Repository{}, err
 	}
 
-	helper.SignRequest(req)
-
-	client := &http.Client{}
-	resp, err := client.Do(req)
+	result, err := sendRequest(req, 201)
 	if err != nil {
 		return types.Repository{}, err
 	}
-	defer resp.Body.Close()
 
-	if resp.StatusCode != 201 {
-		body, err := ioutil.ReadAll(resp.Body)
-		if err != nil {
-			return types.Repository{}, err
-		}
-		helper.PrintAPIError(body)
-		return types.Repository{}, err
-	}
-
-	respBody, err := ioutil.ReadAll(resp.Body)
 	repo := types.Repository{}
-	err = json.Unmarshal([]byte(respBody), &repo)
+	err = json.Unmarshal(result, &repo)
 	if err != nil {
 		return types.Repository{}, err
 	}
@@ -128,25 +84,9 @@ func DeleteRepository(repoName string) error {
 		return err
 	}
 
-	helper.SignRequest(req)
+	_, err = sendRequest(req, 204)
 
-	client := &http.Client{}
-	resp, err := client.Do(req)
-	if err != nil {
-		return err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != 204 {
-		body, err := ioutil.ReadAll(resp.Body)
-		if err != nil {
-			return err
-		}
-		helper.PrintAPIError(body)
-		return err
-	}
-
-	return nil
+	return err
 }
 
 // UpdateRepository calls the Tower API - PUT /repositories/{name}.
@@ -158,27 +98,13 @@ func UpdateRepository(body []byte, repoName string) (types.Repository, error) {
 		return types.Repository{}, err
 	}
 
-	helper.SignRequest(req)
-
-	client := &http.Client{}
-	resp, err := client.Do(req)
+	result, err := sendRequest(req, 200)
 	if err != nil {
 		return types.Repository{}, err
 	}
-	defer resp.Body.Close()
 
-	if resp.StatusCode != 200 {
-		body, err := ioutil.ReadAll(resp.Body)
-		if err != nil {
-			return types.Repository{}, err
-		}
-		helper.PrintAPIError(body)
-		return types.Repository{}, err
-	}
-
-	respBody, err := ioutil.ReadAll(resp.Body)
 	repo := types.Repository{}
-	err = json.Unmarshal([]byte(respBody), &repo)
+	err = json.Unmarshal(result, &repo)
 	if err != nil {
 		return types.Repository{}, err
 	}
