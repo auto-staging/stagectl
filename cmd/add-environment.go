@@ -3,7 +3,6 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"os"
 
 	"gitlab.com/auto-staging/tower/types"
@@ -23,7 +22,7 @@ func addEnvironmentCmdFunc(cmd *cobra.Command, args []string) {
 
 	if len(args) == 0 {
 		fmt.Println("Please specify the repository you want to add the environment for, check 'stagectl add environment -h' for more info")
-		return
+		os.Exit(1)
 	}
 
 	repoName := args[0]
@@ -33,7 +32,7 @@ func addEnvironmentCmdFunc(cmd *cobra.Command, args []string) {
 	helper.AskForEnvironmentAddInput(&envAdd)
 	yamlBody, err := yaml.Marshal(envAdd)
 	if err != nil {
-		log.Println(err)
+		os.Exit(1)
 	}
 	fmt.Println("")
 	fmt.Println(string(yamlBody))
@@ -44,7 +43,7 @@ func addEnvironmentCmdFunc(cmd *cobra.Command, args []string) {
 		Default: "no",
 	})
 	if err != nil {
-		log.Fatal(err)
+		os.Exit(1)
 	}
 	if decision == "no" {
 		return
@@ -52,19 +51,19 @@ func addEnvironmentCmdFunc(cmd *cobra.Command, args []string) {
 
 	body, err := json.Marshal(envAdd)
 	if err != nil {
-		log.Fatal(err)
+		os.Exit(1)
 	}
 
 	env, err := model.AddEnvironment(repoName, body)
 	if err != nil {
-		log.Fatal(err)
+		os.Exit(1)
 	}
 
 	fmt.Println("Successfully added")
 
 	yamlBody, err = yaml.Marshal(env)
 	if err != nil {
-		log.Println(err)
+		os.Exit(1)
 	}
 	fmt.Println("")
 	fmt.Println(string(yamlBody))

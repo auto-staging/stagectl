@@ -3,7 +3,7 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
-	"log"
+	"os"
 
 	"github.com/spf13/cobra"
 	"gitlab.com/auto-staging/stagectl/model"
@@ -13,14 +13,14 @@ import (
 func getGeneralConfigurationCmdFunc(cmd *cobra.Command, args []string) {
 	config, err := model.GetGeneralConfig()
 	if err != nil {
-		log.Println(err)
+		os.Exit(1)
 	}
 
 	switch cmd.Flag("output").Value.String() {
 	case "yaml":
 		yamlBody, err := yaml.Marshal(config)
 		if err != nil {
-			log.Println(err)
+			os.Exit(1)
 		}
 		fmt.Println("")
 		fmt.Println(string(yamlBody))
@@ -29,7 +29,7 @@ func getGeneralConfigurationCmdFunc(cmd *cobra.Command, args []string) {
 	case "json":
 		jsonBody, err := json.MarshalIndent(config, "", "  ")
 		if err != nil {
-			log.Println(err)
+			os.Exit(1)
 		}
 		fmt.Println("")
 		fmt.Print(string(jsonBody))

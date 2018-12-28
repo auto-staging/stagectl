@@ -3,7 +3,7 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
-	"log"
+	"os"
 
 	"github.com/spf13/cobra"
 	"gitlab.com/auto-staging/stagectl/helper"
@@ -15,26 +15,26 @@ func updateTowerConfigurationCmdFunc(cmd *cobra.Command, args []string) {
 
 	config, err := model.GetTowerConfig()
 	if err != nil {
-		log.Fatal(err)
+		os.Exit(1)
 	}
 
 	helper.AskForTowerConfigUpdateInput(&config)
 
 	body, err := json.Marshal(config)
 	if err != nil {
-		log.Fatal(err)
+		os.Exit(1)
 	}
 
 	config, err = model.UpdateTowerConfiguration(body)
 	if err != nil {
-		log.Fatal(err)
+		os.Exit(1)
 	}
 
 	fmt.Println("Successfully updated")
 
 	yamlBody, err := yaml.Marshal(config)
 	if err != nil {
-		log.Fatal(err)
+		os.Exit(1)
 	}
 	fmt.Println("")
 	fmt.Println(string(yamlBody))
