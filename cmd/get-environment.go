@@ -44,7 +44,7 @@ func getEnvironmentCmdFunc(cmd *cobra.Command, args []string) {
 func outputEnvironmentsArray(envs []types.Environment, format string) {
 	switch format {
 	case "table":
-		data := [][]string{}
+		var data [][]string
 		table := tablewriter.NewWriter(os.Stdout)
 		for _, env := range envs {
 			data = append(data, []string{env.Branch, env.CreationDate, env.Status, fmt.Sprint(env.ShutdownSchedules), fmt.Sprint(env.StartupSchedules)})
@@ -83,7 +83,7 @@ func outputEnvironmentsArray(envs []types.Environment, format string) {
 func outputEnvironment(env types.Environment, format string) {
 	switch format {
 	case "table":
-		data := [][]string{}
+		var data [][]string
 		table := tablewriter.NewWriter(os.Stdout)
 		data = append(data, []string{env.Branch, env.CreationDate, env.Status, fmt.Sprint(env.ShutdownSchedules), fmt.Sprint(env.StartupSchedules)})
 		table.SetHeader([]string{"Branch", "Creation_Date", "Status", "Shutdown_Schedules", "Startup_Schedules"})

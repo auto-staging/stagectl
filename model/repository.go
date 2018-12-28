@@ -22,7 +22,7 @@ func GetAllRepositories() ([]types.Repository, error) {
 		return []types.Repository{}, err
 	}
 
-	repos := []types.Repository{}
+	var repos []types.Repository
 	err = json.Unmarshal(result, &repos)
 	if err != nil {
 		return []types.Repository{}, err

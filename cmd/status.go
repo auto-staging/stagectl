@@ -48,7 +48,7 @@ var statusCmd = &cobra.Command{
 
 			switch cmd.Flag("output").Value.String() {
 			case "table":
-				data := [][]string{}
+				var data [][]string
 
 				data = append(data, []string{singleStatus.Repository, singleStatus.Branch, singleStatus.Status})
 
@@ -97,7 +97,7 @@ var statusCmd = &cobra.Command{
 
 		switch cmd.Flag("output").Value.String() {
 		case "table":
-			data := [][]string{}
+			var data [][]string
 
 			for _, singleStatus := range status {
 				data = append(data, []string{singleStatus.Repository, singleStatus.Branch, singleStatus.Status})

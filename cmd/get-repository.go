@@ -36,7 +36,7 @@ func getRepositoriesCmdFunc(cmd *cobra.Command, args []string) {
 func outputRepositoriesArray(repos []types.Repository, format string) {
 	switch format {
 	case "table":
-		data := [][]string{}
+		var data [][]string
 		table := tablewriter.NewWriter(os.Stdout)
 		for _, repo := range repos {
 			data = append(data, []string{repo.Repository, repo.InfrastructureRepoURL, fmt.Sprint(repo.Webhook), fmt.Sprint(repo.Filters), fmt.Sprint(repo.ShutdownSchedules), fmt.Sprint(repo.StartupSchedules), repo.CodeBuildRoleARN})
@@ -74,7 +74,7 @@ func outputRepositoriesArray(repos []types.Repository, format string) {
 func outputRepository(repo types.Repository, format string) {
 	switch format {
 	case "table":
-		data := [][]string{}
+		var data [][]string
 		table := tablewriter.NewWriter(os.Stdout)
 		data = append(data, []string{repo.Repository, repo.InfrastructureRepoURL, fmt.Sprint(repo.Webhook), fmt.Sprint(repo.Filters), fmt.Sprint(repo.ShutdownSchedules), fmt.Sprint(repo.StartupSchedules), repo.CodeBuildRoleARN})
 		table.SetHeader([]string{"Repository", "InfrastructureRepoURL", "Webhook", "Filters", "ShutdownSchedules", "StartupSchedules", "CodeBuildRoleARN"})

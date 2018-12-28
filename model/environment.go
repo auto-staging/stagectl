@@ -22,7 +22,7 @@ func GetEnvironmentsForRepo(repo string) ([]types.Environment, error) {
 		return []types.Environment{}, err
 	}
 
-	envs := []types.Environment{}
+	var envs []types.Environment
 	err = json.Unmarshal(result, &envs)
 	if err != nil {
 		return []types.Environment{}, err

@@ -21,7 +21,7 @@ func GetAllStatus() ([]types.EnvironmentStatus, error) {
 		return []types.EnvironmentStatus{}, err
 	}
 
-	status := []types.EnvironmentStatus{}
+	var status []types.EnvironmentStatus
 	err = json.Unmarshal(result, &status)
 	if err != nil {
 		return []types.EnvironmentStatus{}, err
