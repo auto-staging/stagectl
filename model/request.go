@@ -36,5 +36,5 @@ func sendRequest(req *http.Request, expectedCode int) ([]byte, error) {
 		return []byte{}, err
 	}
 
-	return []byte(respBody), nil
+	return respBody, nil
 }
