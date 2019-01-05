@@ -47,5 +47,4 @@ func updateRepositoryCmdFunc(cmd *cobra.Command, args []string) {
 	fmt.Println("")
 	fmt.Println(string(yamlBody))
 	fmt.Println("")
-	return
 }
