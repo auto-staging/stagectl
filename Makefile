@@ -3,7 +3,8 @@ prepare:
 	dep ensure -v
 
 build: prepare
-	go build -o ./bin/stagectl -v
+	NOW=$(date +'%Y-%m-%d_%T') && \
+	go build -o ./bin/stagectl -v -ldflags "-X gitlab.com/auto-staging/stagectl/cmd.gitSha=`git rev-parse HEAD` -X gitlab.com/auto-staging/stagectl/cmd.buildTime=$NOW -X gitlab.com/auto-staging/stagectl/cmd.version=LOCAL_BUILD"
 
 tests:
 	go test ./... -v

@@ -22,6 +22,7 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 	"os"
 
 	homedir "github.com/mitchellh/go-homedir"
@@ -31,10 +32,28 @@ import (
 
 var cfgFile string
 
+var version string
+var gitSha string
+var buildTime string
+
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "stagectl",
 	Short: "Control your auto-staging setup",
+	Run: func(cmd *cobra.Command, args []string) {
+		getVersion, err := cmd.Flags().GetBool("version")
+		if err != nil {
+			log.Fatal(err)
+		}
+		if getVersion {
+			fmt.Printf("\nVersion - %s \n", version)
+			fmt.Printf("Git SHA - %s \n", gitSha)
+			fmt.Printf("Build time - %s \n", buildTime)
+			return
+		}
+
+		cmd.Help()
+	},
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -53,6 +72,8 @@ func init() {
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.stagectl.yaml)")
+
+	rootCmd.Flags().BoolP("version", "v", false, "Outputs the version number of stagectl")
 }
 
 // initConfig reads in config file and ENV variables if set.
