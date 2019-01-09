@@ -1,5 +1,9 @@
 # Stagectl
 
+[![Maintainability](https://api.codeclimate.com/v1/badges/1b5cfb7c6fae36b3f56e/maintainability)](https://codeclimate.com/github/auto-staging/stagectl/maintainability)
+[![GoDoc](https://godoc.org/github.com/auto-staging/stagectl?status.svg)](https://godoc.org/github.com/auto-staging/stagectl)
+[![Go Report Card](https://goreportcard.com/badge/github.com/auto-staging/stagectl)](https://goreportcard.com/report/github.com/auto-staging/stagectl)
+
 > Stagectl is the CLI tool to manage your auto-staging setup.
 
 ## Configuration of stagectl
