@@ -5,6 +5,13 @@
 
 * replaced exit 1 with log.Fatal() to solve missing error logging ([fcea664](https://github.com/auto-staging/stagectl/commit/fcea664))
 
+## [1.0.1](https://github.com/auto-staging/stagectl/compare/1.0.0...1.0.1) (2019-01-09)
+
+
+### Bug Fixes
+
+* replaced exit 1 with log.Fatal() to solve missing error logging ([fcea664](https://github.com/auto-staging/stagectl/commit/fcea664))
+
 # 1.0.0 (2019-01-09)
 
 
