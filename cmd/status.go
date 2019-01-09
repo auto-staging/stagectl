@@ -23,6 +23,7 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/url"
 	"os"
 
@@ -43,7 +44,7 @@ var statusCmd = &cobra.Command{
 		if cmd.Flag("repo").Value.String() != "" && cmd.Flag("branch").Value.String() != "" {
 			singleStatus, err := model.GetSingleStatus(cmd.Flag("repo").Value.String(), url.PathEscape(cmd.Flag("branch").Value.String()))
 			if err != nil {
-				os.Exit(1)
+				log.Fatal(err)
 			}
 
 			switch cmd.Flag("output").Value.String() {
@@ -71,7 +72,7 @@ var statusCmd = &cobra.Command{
 			case "yaml":
 				yamlBody, err := yaml.Marshal(singleStatus)
 				if err != nil {
-					os.Exit(1)
+					log.Fatal(err)
 				}
 				fmt.Println("")
 				fmt.Println(string(yamlBody))
@@ -80,7 +81,7 @@ var statusCmd = &cobra.Command{
 			case "json":
 				jsonBody, err := json.MarshalIndent(singleStatus, "", "  ")
 				if err != nil {
-					os.Exit(1)
+					log.Fatal(err)
 				}
 				fmt.Println("")
 				fmt.Print(string(jsonBody))
@@ -92,7 +93,7 @@ var statusCmd = &cobra.Command{
 
 		status, err := model.GetAllStatus()
 		if err != nil {
-			os.Exit(1)
+			log.Fatal(err)
 		}
 
 		switch cmd.Flag("output").Value.String() {
@@ -122,7 +123,7 @@ var statusCmd = &cobra.Command{
 		case "yaml":
 			yamlBody, err := yaml.Marshal(status)
 			if err != nil {
-				os.Exit(1)
+				log.Fatal(err)
 			}
 			fmt.Println("")
 			fmt.Println(string(yamlBody))
@@ -131,7 +132,7 @@ var statusCmd = &cobra.Command{
 		case "json":
 			jsonBody, err := json.MarshalIndent(status, "", "  ")
 			if err != nil {
-				os.Exit(1)
+				log.Fatal(err)
 			}
 			fmt.Println("")
 			fmt.Print(string(jsonBody))

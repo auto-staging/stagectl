@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 	"net/url"
 	"os"
 
@@ -20,7 +21,7 @@ func removeEnvironmentCmdFunc(cmd *cobra.Command, args []string) {
 
 	err := model.DeleteSingleEnvironment(repoName, url.PathEscape(branchName))
 	if err != nil {
-		os.Exit(1)
+		log.Fatal(err)
 	}
 
 	fmt.Println("Successfully started deletion of environment")

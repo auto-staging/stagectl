@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/auto-staging/stagectl/model"
@@ -17,7 +18,7 @@ func removeRepositoryCmdFunc(cmd *cobra.Command, args []string) {
 
 	err := model.DeleteRepository(args[0])
 	if err != nil {
-		os.Exit(1)
+		log.Fatal(err)
 	}
 
 	fmt.Println("Successfully deleted")

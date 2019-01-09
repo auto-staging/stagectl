@@ -3,6 +3,7 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/url"
 	"os"
 
@@ -25,7 +26,7 @@ func updateEnvironmentCmdFunc(cmd *cobra.Command, args []string) {
 
 	env, err := model.GetSingleEnvironmentForRepo(repoName, url.PathEscape(branchName))
 	if err != nil {
-		os.Exit(1)
+		log.Fatal(err)
 	}
 
 	envUpdate := types.EnvironmentPut{
@@ -40,19 +41,19 @@ func updateEnvironmentCmdFunc(cmd *cobra.Command, args []string) {
 
 	body, err := json.Marshal(envUpdate)
 	if err != nil {
-		os.Exit(1)
+		log.Fatal(err)
 	}
 
 	env, err = model.UpdateSingleEnvironment(repoName, url.PathEscape(branchName), body)
 	if err != nil {
-		os.Exit(1)
+		log.Fatal(err)
 	}
 
 	fmt.Println("Successfully updated")
 
 	yamlBody, err := yaml.Marshal(env)
 	if err != nil {
-		os.Exit(1)
+		log.Fatal(err)
 	}
 	fmt.Println("")
 	fmt.Println(string(yamlBody))

@@ -43,5 +43,6 @@ jobs:
         - go get github.com/mitchellh/gox
         - go get github.com/tcnksm/ghr
         - make prepare
-        - gox -output "dist/{{.OS}}_{{.Arch}}_{{.Dir}}" -ldflags "-X github.com/auto-staging/stagectl/cmd.gitSha=`git rev-parse HEAD` -X github.com/auto-staging/stagectl/cmd.buildTime=$NOW -X github.com/auto-staging/stagectl/cmd.version=`git describe --abbrev=0 --tags`"
+        - NOW=$(date +'%Y-%m-%d_%T')
+        - gox -output "dist/{{.OS}}_{{.Arch}}_{{.Dir}}" -ldflags "-X github.com/auto-staging/stagectl/cmd.gitSha=`git rev-parse HEAD` -X github.com/auto-staging/stagectl/cmd.buildTime=$NOW -Xgithub.com/auto-staging/stagectl/cmd.version=`git describe --abbrev=0 --tags`" -arch="amd64 386" -os="linux darwin windows"
         - ghr --username auto-staging --token $GITHUB_TOKEN --replace $(git describe --abbrev=0 --tags) dist/

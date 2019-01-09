@@ -3,6 +3,7 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/url"
 	"os"
 
@@ -20,14 +21,14 @@ func getRepositoriesCmdFunc(cmd *cobra.Command, args []string) {
 	if repoName == "" { // All repos
 		repos, err := model.GetAllRepositories()
 		if err != nil {
-			os.Exit(1)
+			log.Fatal(err)
 		}
 		outputRepositoriesArray(repos, output)
 
 	} else { // Single repo
 		repo, err := model.GetSingleRepository(repoName)
 		if err != nil {
-			os.Exit(1)
+			log.Fatal(err)
 		}
 		outputRepository(repo, output)
 	}
@@ -53,7 +54,7 @@ func outputRepositoriesArray(repos []types.Repository, format string) {
 	case "json":
 		jsonBody, err := json.MarshalIndent(repos, "", "  ")
 		if err != nil {
-			os.Exit(1)
+			log.Fatal(err)
 		}
 		fmt.Println("")
 		fmt.Print(string(jsonBody))
@@ -62,7 +63,7 @@ func outputRepositoriesArray(repos []types.Repository, format string) {
 	case "yaml":
 		yamlBody, err := yaml.Marshal(repos)
 		if err != nil {
-			os.Exit(1)
+			log.Fatal(err)
 		}
 		fmt.Println("")
 		fmt.Println(string(yamlBody))
@@ -90,7 +91,7 @@ func outputRepository(repo types.Repository, format string) {
 	case "json":
 		jsonBody, err := json.MarshalIndent(repo, "", "  ")
 		if err != nil {
-			os.Exit(1)
+			log.Fatal(err)
 		}
 		fmt.Println("")
 		fmt.Print(string(jsonBody))
@@ -100,7 +101,7 @@ func outputRepository(repo types.Repository, format string) {
 	case "yaml":
 		yamlBody, err := yaml.Marshal(repo)
 		if err != nil {
-			os.Exit(1)
+			log.Fatal(err)
 		}
 		fmt.Println("")
 		fmt.Println(string(yamlBody))
