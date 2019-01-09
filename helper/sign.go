@@ -17,7 +17,11 @@ func SignRequest(req *http.Request) {
 
 	// Sign without body
 	if req.Body == nil {
-		signer.Sign(req, nil, "execute-api", "eu-central-1", time.Now())
+		_, err := signer.Sign(req, nil, "execute-api", "eu-central-1", time.Now())
+		if err != nil {
+			log.Println("Couldn't sign request with empty body")
+			log.Fatal(err)
+		}
 		return
 	}
 
@@ -27,5 +31,9 @@ func SignRequest(req *http.Request) {
 		log.Println("Signing error")
 		log.Println(err)
 	}
-	signer.Sign(req, bytes.NewReader(body), "execute-api", "eu-central-1", time.Now())
+	_, err = signer.Sign(req, bytes.NewReader(body), "execute-api", "eu-central-1", time.Now())
+	if err != nil {
+		log.Println("Couldn't sign request with body")
+		log.Fatal(err)
+	}
 }

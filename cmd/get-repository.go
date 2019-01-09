@@ -3,7 +3,6 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/url"
 	"os"
 
@@ -21,16 +20,14 @@ func getRepositoriesCmdFunc(cmd *cobra.Command, args []string) {
 	if repoName == "" { // All repos
 		repos, err := model.GetAllRepositories()
 		if err != nil {
-			log.Println(err)
-			return
+			os.Exit(1)
 		}
 		outputRepositoriesArray(repos, output)
 
 	} else { // Single repo
 		repo, err := model.GetSingleRepository(repoName)
 		if err != nil {
-			log.Println(err)
-			return
+			os.Exit(1)
 		}
 		outputRepository(repo, output)
 	}
@@ -39,7 +36,7 @@ func getRepositoriesCmdFunc(cmd *cobra.Command, args []string) {
 func outputRepositoriesArray(repos []types.Repository, format string) {
 	switch format {
 	case "table":
-		data := [][]string{}
+		var data [][]string
 		table := tablewriter.NewWriter(os.Stdout)
 		for _, repo := range repos {
 			data = append(data, []string{repo.Repository, repo.InfrastructureRepoURL, fmt.Sprint(repo.Webhook), fmt.Sprint(repo.Filters), fmt.Sprint(repo.ShutdownSchedules), fmt.Sprint(repo.StartupSchedules), repo.CodeBuildRoleARN})
@@ -56,7 +53,7 @@ func outputRepositoriesArray(repos []types.Repository, format string) {
 	case "json":
 		jsonBody, err := json.MarshalIndent(repos, "", "  ")
 		if err != nil {
-			log.Println(err)
+			os.Exit(1)
 		}
 		fmt.Println("")
 		fmt.Print(string(jsonBody))
@@ -65,7 +62,7 @@ func outputRepositoriesArray(repos []types.Repository, format string) {
 	case "yaml":
 		yamlBody, err := yaml.Marshal(repos)
 		if err != nil {
-			log.Println(err)
+			os.Exit(1)
 		}
 		fmt.Println("")
 		fmt.Println(string(yamlBody))
@@ -77,7 +74,7 @@ func outputRepositoriesArray(repos []types.Repository, format string) {
 func outputRepository(repo types.Repository, format string) {
 	switch format {
 	case "table":
-		data := [][]string{}
+		var data [][]string
 		table := tablewriter.NewWriter(os.Stdout)
 		data = append(data, []string{repo.Repository, repo.InfrastructureRepoURL, fmt.Sprint(repo.Webhook), fmt.Sprint(repo.Filters), fmt.Sprint(repo.ShutdownSchedules), fmt.Sprint(repo.StartupSchedules), repo.CodeBuildRoleARN})
 		table.SetHeader([]string{"Repository", "InfrastructureRepoURL", "Webhook", "Filters", "ShutdownSchedules", "StartupSchedules", "CodeBuildRoleARN"})
@@ -93,7 +90,7 @@ func outputRepository(repo types.Repository, format string) {
 	case "json":
 		jsonBody, err := json.MarshalIndent(repo, "", "  ")
 		if err != nil {
-			log.Println(err)
+			os.Exit(1)
 		}
 		fmt.Println("")
 		fmt.Print(string(jsonBody))
@@ -103,7 +100,7 @@ func outputRepository(repo types.Repository, format string) {
 	case "yaml":
 		yamlBody, err := yaml.Marshal(repo)
 		if err != nil {
-			log.Println(err)
+			os.Exit(1)
 		}
 		fmt.Println("")
 		fmt.Println(string(yamlBody))

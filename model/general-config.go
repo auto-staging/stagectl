@@ -3,11 +3,9 @@ package model
 import (
 	"bytes"
 	"encoding/json"
-	"io/ioutil"
 	"net/http"
 
 	"github.com/spf13/viper"
-	"gitlab.com/auto-staging/stagectl/helper"
 	"gitlab.com/auto-staging/tower/types"
 )
 
@@ -19,27 +17,13 @@ func GetGeneralConfig() (types.GeneralConfig, error) {
 		return types.GeneralConfig{}, err
 	}
 
-	helper.SignRequest(req)
-
-	client := &http.Client{}
-	resp, err := client.Do(req)
+	result, err := sendRequest(req, 200)
 	if err != nil {
 		return types.GeneralConfig{}, err
 	}
-	defer resp.Body.Close()
 
-	if resp.StatusCode != 200 {
-		body, err := ioutil.ReadAll(resp.Body)
-		if err != nil {
-			return types.GeneralConfig{}, err
-		}
-		helper.PrintAPIError(body)
-		return types.GeneralConfig{}, err
-	}
-
-	body, err := ioutil.ReadAll(resp.Body)
 	config := types.GeneralConfig{}
-	err = json.Unmarshal([]byte(body), &config)
+	err = json.Unmarshal(result, &config)
 	if err != nil {
 		return types.GeneralConfig{}, err
 	}
@@ -56,27 +40,13 @@ func UpdateGeneralConfiguration(body []byte) (types.GeneralConfig, error) {
 		return types.GeneralConfig{}, err
 	}
 
-	helper.SignRequest(req)
-
-	client := &http.Client{}
-	resp, err := client.Do(req)
+	result, err := sendRequest(req, 200)
 	if err != nil {
 		return types.GeneralConfig{}, err
 	}
-	defer resp.Body.Close()
 
-	if resp.StatusCode != 200 {
-		body, err := ioutil.ReadAll(resp.Body)
-		if err != nil {
-			return types.GeneralConfig{}, err
-		}
-		helper.PrintAPIError(body)
-		return types.GeneralConfig{}, err
-	}
-
-	respBody, err := ioutil.ReadAll(resp.Body)
 	config := types.GeneralConfig{}
-	err = json.Unmarshal([]byte(respBody), &config)
+	err = json.Unmarshal(result, &config)
 	if err != nil {
 		return types.GeneralConfig{}, err
 	}

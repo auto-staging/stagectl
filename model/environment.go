@@ -3,11 +3,9 @@ package model
 import (
 	"bytes"
 	"encoding/json"
-	"io/ioutil"
 	"net/http"
 
 	"github.com/spf13/viper"
-	"gitlab.com/auto-staging/stagectl/helper"
 	"gitlab.com/auto-staging/tower/types"
 )
 
@@ -19,27 +17,13 @@ func GetEnvironmentsForRepo(repo string) ([]types.Environment, error) {
 		return []types.Environment{}, err
 	}
 
-	helper.SignRequest(req)
-
-	client := &http.Client{}
-	resp, err := client.Do(req)
+	result, err := sendRequest(req, 200)
 	if err != nil {
 		return []types.Environment{}, err
 	}
-	defer resp.Body.Close()
 
-	if resp.StatusCode != 200 {
-		body, err := ioutil.ReadAll(resp.Body)
-		if err != nil {
-			return []types.Environment{}, err
-		}
-		helper.PrintAPIError(body)
-		return []types.Environment{}, err
-	}
-
-	body, err := ioutil.ReadAll(resp.Body)
-	envs := []types.Environment{}
-	err = json.Unmarshal([]byte(body), &envs)
+	var envs []types.Environment
+	err = json.Unmarshal(result, &envs)
 	if err != nil {
 		return []types.Environment{}, err
 	}
@@ -55,27 +39,13 @@ func GetSingleEnvironmentForRepo(repo, branch string) (types.Environment, error)
 		return types.Environment{}, err
 	}
 
-	helper.SignRequest(req)
-
-	client := &http.Client{}
-	resp, err := client.Do(req)
+	result, err := sendRequest(req, 200)
 	if err != nil {
 		return types.Environment{}, err
 	}
-	defer resp.Body.Close()
 
-	if resp.StatusCode != 200 {
-		body, err := ioutil.ReadAll(resp.Body)
-		if err != nil {
-			return types.Environment{}, err
-		}
-		helper.PrintAPIError(body)
-		return types.Environment{}, err
-	}
-
-	body, err := ioutil.ReadAll(resp.Body)
 	env := types.Environment{}
-	err = json.Unmarshal([]byte(body), &env)
+	err = json.Unmarshal(result, &env)
 	if err != nil {
 		return types.Environment{}, err
 	}
@@ -92,27 +62,13 @@ func UpdateSingleEnvironment(repo, branch string, body []byte) (types.Environmen
 		return types.Environment{}, err
 	}
 
-	helper.SignRequest(req)
-
-	client := &http.Client{}
-	resp, err := client.Do(req)
+	result, err := sendRequest(req, 200)
 	if err != nil {
 		return types.Environment{}, err
 	}
-	defer resp.Body.Close()
 
-	if resp.StatusCode != 200 {
-		body, err := ioutil.ReadAll(resp.Body)
-		if err != nil {
-			return types.Environment{}, err
-		}
-		helper.PrintAPIError(body)
-		return types.Environment{}, err
-	}
-
-	respBody, err := ioutil.ReadAll(resp.Body)
 	env := types.Environment{}
-	err = json.Unmarshal([]byte(respBody), &env)
+	err = json.Unmarshal(result, &env)
 	if err != nil {
 		return types.Environment{}, err
 	}
@@ -128,25 +84,9 @@ func DeleteSingleEnvironment(repo, branch string) error {
 		return err
 	}
 
-	helper.SignRequest(req)
+	_, err = sendRequest(req, 202)
 
-	client := &http.Client{}
-	resp, err := client.Do(req)
-	if err != nil {
-		return err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != 202 {
-		body, err := ioutil.ReadAll(resp.Body)
-		if err != nil {
-			return err
-		}
-		helper.PrintAPIError(body)
-		return err
-	}
-
-	return nil
+	return err
 }
 
 // AddEnvironment calls the Tower API - POST /repositories/{name}/environments/{branch}.
@@ -158,27 +98,13 @@ func AddEnvironment(repo string, body []byte) (types.Environment, error) {
 		return types.Environment{}, err
 	}
 
-	helper.SignRequest(req)
-
-	client := &http.Client{}
-	resp, err := client.Do(req)
+	result, err := sendRequest(req, 201)
 	if err != nil {
 		return types.Environment{}, err
 	}
-	defer resp.Body.Close()
 
-	if resp.StatusCode != 201 {
-		body, err := ioutil.ReadAll(resp.Body)
-		if err != nil {
-			return types.Environment{}, err
-		}
-		helper.PrintAPIError(body)
-		return types.Environment{}, err
-	}
-
-	respBody, err := ioutil.ReadAll(resp.Body)
 	env := types.Environment{}
-	err = json.Unmarshal([]byte(respBody), &env)
+	err = json.Unmarshal(result, &env)
 	if err != nil {
 		return types.Environment{}, err
 	}

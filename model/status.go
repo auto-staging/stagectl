@@ -2,11 +2,9 @@ package model
 
 import (
 	"encoding/json"
-	"io/ioutil"
 	"net/http"
 
 	"github.com/spf13/viper"
-	"gitlab.com/auto-staging/stagectl/helper"
 	"gitlab.com/auto-staging/tower/types"
 )
 
@@ -18,27 +16,13 @@ func GetAllStatus() ([]types.EnvironmentStatus, error) {
 		return []types.EnvironmentStatus{}, err
 	}
 
-	helper.SignRequest(req)
-
-	client := &http.Client{}
-	resp, err := client.Do(req)
+	result, err := sendRequest(req, 200)
 	if err != nil {
 		return []types.EnvironmentStatus{}, err
 	}
-	defer resp.Body.Close()
 
-	if resp.StatusCode != 200 {
-		body, err := ioutil.ReadAll(resp.Body)
-		if err != nil {
-			return []types.EnvironmentStatus{}, err
-		}
-		helper.PrintAPIError(body)
-		return []types.EnvironmentStatus{}, err
-	}
-
-	body, err := ioutil.ReadAll(resp.Body)
-	status := []types.EnvironmentStatus{}
-	err = json.Unmarshal([]byte(body), &status)
+	var status []types.EnvironmentStatus
+	err = json.Unmarshal(result, &status)
 	if err != nil {
 		return []types.EnvironmentStatus{}, err
 	}
@@ -54,27 +38,13 @@ func GetSingleStatus(repo, branch string) (types.EnvironmentStatus, error) {
 		return types.EnvironmentStatus{}, err
 	}
 
-	helper.SignRequest(req)
-
-	client := &http.Client{}
-	resp, err := client.Do(req)
+	result, err := sendRequest(req, 200)
 	if err != nil {
 		return types.EnvironmentStatus{}, err
 	}
-	defer resp.Body.Close()
 
-	if resp.StatusCode != 200 {
-		body, err := ioutil.ReadAll(resp.Body)
-		if err != nil {
-			return types.EnvironmentStatus{}, err
-		}
-		helper.PrintAPIError(body)
-		return types.EnvironmentStatus{}, err
-	}
-
-	body, err := ioutil.ReadAll(resp.Body)
 	status := types.EnvironmentStatus{}
-	err = json.Unmarshal([]byte(body), &status)
+	err = json.Unmarshal(result, &status)
 	if err != nil {
 		return types.EnvironmentStatus{}, err
 	}

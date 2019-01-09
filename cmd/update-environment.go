@@ -3,8 +3,8 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/url"
+	"os"
 
 	"gitlab.com/auto-staging/tower/types"
 	yaml "gopkg.in/yaml.v2"
@@ -17,7 +17,7 @@ import (
 func updateEnvironmentCmdFunc(cmd *cobra.Command, args []string) {
 	if len(args) < 2 {
 		fmt.Println("Please specify the repository and branch you want to edit the environment for, check 'stagectl update environment -h' for more info")
-		return
+		os.Exit(1)
 	}
 
 	repoName := args[0]
@@ -25,8 +25,7 @@ func updateEnvironmentCmdFunc(cmd *cobra.Command, args []string) {
 
 	env, err := model.GetSingleEnvironmentForRepo(repoName, url.PathEscape(branchName))
 	if err != nil {
-		log.Println(err)
-		return
+		os.Exit(1)
 	}
 
 	envUpdate := types.EnvironmentPut{
@@ -41,22 +40,21 @@ func updateEnvironmentCmdFunc(cmd *cobra.Command, args []string) {
 
 	body, err := json.Marshal(envUpdate)
 	if err != nil {
-		log.Fatal(err)
+		os.Exit(1)
 	}
 
 	env, err = model.UpdateSingleEnvironment(repoName, url.PathEscape(branchName), body)
 	if err != nil {
-		log.Fatal(err)
+		os.Exit(1)
 	}
 
 	fmt.Println("Successfully updated")
 
 	yamlBody, err := yaml.Marshal(env)
 	if err != nil {
-		log.Println(err)
+		os.Exit(1)
 	}
 	fmt.Println("")
 	fmt.Println(string(yamlBody))
 	fmt.Println("")
-	return
 }

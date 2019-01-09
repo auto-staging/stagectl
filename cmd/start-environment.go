@@ -3,7 +3,7 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
-	"log"
+	"os"
 
 	"gitlab.com/auto-staging/stagectl/model"
 
@@ -15,7 +15,7 @@ import (
 func startEnvironmentCmdFunc(cmd *cobra.Command, args []string) {
 	if len(args) < 2 {
 		fmt.Println("Please specify the repository and branch you want to start the environment for, check 'stagectl start environment -h' for more info")
-		return
+		os.Exit(1)
 	}
 
 	repository := args[0]
@@ -29,12 +29,12 @@ func startEnvironmentCmdFunc(cmd *cobra.Command, args []string) {
 
 	body, err := json.Marshal(trigger)
 	if err != nil {
-		log.Fatal(err)
+		os.Exit(1)
 	}
 
 	err = model.TriggerSchedule(body)
 	if err != nil {
-		log.Fatal(err)
+		os.Exit(1)
 	}
 
 	fmt.Println("Successfully invoked scheduler for start")

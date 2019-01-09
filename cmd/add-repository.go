@@ -17,31 +17,27 @@ func addRepositoryCmdFunc(cmd *cobra.Command, args []string) {
 
 	file, err := os.Open(inputFileName)
 	if err != nil {
-		fmt.Println(err)
-		return
+		os.Exit(1)
 	}
 	fmt.Println("Using definition file: " + inputFileName)
 	defer file.Close()
 
 	byteValue, err := ioutil.ReadAll(file)
 	if err != nil {
-		log.Println(err)
-		return
+		os.Exit(1)
 	}
 
 	output, err := model.AddRepository(byteValue)
 	if err != nil {
 		log.Println("Failed")
-		log.Println(err)
-		return
+		os.Exit(1)
 	}
 
 	yamlBody, err := yaml.Marshal(output)
 	if err != nil {
-		log.Println(err)
+		os.Exit(1)
 	}
 	fmt.Println("")
 	fmt.Println(string(yamlBody))
 	fmt.Println("")
-	return
 }
