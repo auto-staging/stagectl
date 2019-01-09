@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 
 	"github.com/auto-staging/tower/types"
@@ -18,20 +19,20 @@ func updateRepositoryCmdFunc(cmd *cobra.Command, args []string) {
 
 	file, err := os.Open(inputFileName)
 	if err != nil {
-		os.Exit(1)
+		log.Fatal(err)
 	}
 	fmt.Println("Using definition file: " + inputFileName)
 	defer file.Close()
 
 	byteValue, err := ioutil.ReadAll(file)
 	if err != nil {
-		os.Exit(1)
+		log.Fatal(err)
 	}
 
 	inputRepo := types.Repository{}
 	err = json.Unmarshal(byteValue, &inputRepo)
 	if err != nil {
-		os.Exit(1)
+		log.Fatal(err)
 	}
 	fmt.Println("Updating " + inputRepo.Repository)
 
@@ -42,7 +43,7 @@ func updateRepositoryCmdFunc(cmd *cobra.Command, args []string) {
 
 	yamlBody, err := yaml.Marshal(output)
 	if err != nil {
-		os.Exit(1)
+		log.Fatal(err)
 	}
 	fmt.Println("")
 	fmt.Println(string(yamlBody))

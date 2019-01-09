@@ -3,6 +3,7 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/auto-staging/tower/types"
@@ -32,7 +33,7 @@ func addEnvironmentCmdFunc(cmd *cobra.Command, args []string) {
 	helper.AskForEnvironmentAddInput(&envAdd)
 	yamlBody, err := yaml.Marshal(envAdd)
 	if err != nil {
-		os.Exit(1)
+		log.Fatal(err)
 	}
 	fmt.Println("")
 	fmt.Println(string(yamlBody))
@@ -43,7 +44,7 @@ func addEnvironmentCmdFunc(cmd *cobra.Command, args []string) {
 		Default: "no",
 	})
 	if err != nil {
-		os.Exit(1)
+		log.Fatal(err)
 	}
 	if decision == "no" {
 		return
@@ -51,19 +52,19 @@ func addEnvironmentCmdFunc(cmd *cobra.Command, args []string) {
 
 	body, err := json.Marshal(envAdd)
 	if err != nil {
-		os.Exit(1)
+		log.Fatal(err)
 	}
 
 	env, err := model.AddEnvironment(repoName, body)
 	if err != nil {
-		os.Exit(1)
+		log.Fatal(err)
 	}
 
 	fmt.Println("Successfully added")
 
 	yamlBody, err = yaml.Marshal(env)
 	if err != nil {
-		os.Exit(1)
+		log.Fatal(err)
 	}
 	fmt.Println("")
 	fmt.Println(string(yamlBody))

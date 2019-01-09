@@ -3,6 +3,7 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/url"
 	"os"
 
@@ -24,7 +25,7 @@ func getEnvironmentCmdFunc(cmd *cobra.Command, args []string) {
 	if cmd.Flag("limit").Value.String() == "" {
 		envs, err := model.GetEnvironmentsForRepo(repo)
 		if err != nil {
-			os.Exit(1)
+			log.Fatal(err)
 		}
 		outputEnvironmentsArray(envs, output)
 
@@ -33,7 +34,7 @@ func getEnvironmentCmdFunc(cmd *cobra.Command, args []string) {
 
 		env, err := model.GetSingleEnvironmentForRepo(repo, branch)
 		if err != nil {
-			os.Exit(1)
+			log.Fatal(err)
 		}
 		outputEnvironment(env, output)
 
@@ -62,7 +63,7 @@ func outputEnvironmentsArray(envs []types.Environment, format string) {
 	case "json":
 		jsonBody, err := json.MarshalIndent(envs, "", "  ")
 		if err != nil {
-			os.Exit(1)
+			log.Fatal(err)
 		}
 		fmt.Println("")
 		fmt.Print(string(jsonBody))
@@ -71,7 +72,7 @@ func outputEnvironmentsArray(envs []types.Environment, format string) {
 	case "yaml":
 		yamlBody, err := yaml.Marshal(envs)
 		if err != nil {
-			os.Exit(1)
+			log.Fatal(err)
 		}
 		fmt.Println("")
 		fmt.Println(string(yamlBody))
@@ -99,7 +100,7 @@ func outputEnvironment(env types.Environment, format string) {
 	case "json":
 		jsonBody, err := json.MarshalIndent(env, "", "  ")
 		if err != nil {
-			os.Exit(1)
+			log.Fatal(err)
 		}
 		fmt.Println("")
 		fmt.Print(string(jsonBody))
@@ -109,7 +110,7 @@ func outputEnvironment(env types.Environment, format string) {
 	case "yaml":
 		yamlBody, err := yaml.Marshal(env)
 		if err != nil {
-			os.Exit(1)
+			log.Fatal(err)
 		}
 		fmt.Println("")
 		fmt.Println(string(yamlBody))

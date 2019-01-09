@@ -3,6 +3,7 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/auto-staging/stagectl/model"
@@ -29,12 +30,12 @@ func startEnvironmentCmdFunc(cmd *cobra.Command, args []string) {
 
 	body, err := json.Marshal(trigger)
 	if err != nil {
-		os.Exit(1)
+		log.Fatal(err)
 	}
 
 	err = model.TriggerSchedule(body)
 	if err != nil {
-		os.Exit(1)
+		log.Fatal(err)
 	}
 
 	fmt.Println("Successfully invoked scheduler for start")
