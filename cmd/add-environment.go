@@ -5,12 +5,12 @@ import (
 	"fmt"
 	"os"
 
-	"gitlab.com/auto-staging/tower/types"
+	"github.com/auto-staging/tower/types"
 
+	"github.com/auto-staging/stagectl/helper"
+	"github.com/auto-staging/stagectl/model"
 	"github.com/spf13/cobra"
 	input "github.com/tcnksm/go-input"
-	"gitlab.com/auto-staging/stagectl/helper"
-	"gitlab.com/auto-staging/stagectl/model"
 	yaml "gopkg.in/yaml.v2"
 )
 

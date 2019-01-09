@@ -6,12 +6,12 @@ import (
 	"net/url"
 	"os"
 
-	"gitlab.com/auto-staging/tower/types"
+	"github.com/auto-staging/tower/types"
 	yaml "gopkg.in/yaml.v2"
 
+	"github.com/auto-staging/stagectl/helper"
+	"github.com/auto-staging/stagectl/model"
 	"github.com/spf13/cobra"
-	"gitlab.com/auto-staging/stagectl/helper"
-	"gitlab.com/auto-staging/stagectl/model"
 )
 
 func updateEnvironmentCmdFunc(cmd *cobra.Command, args []string) {

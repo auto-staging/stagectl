@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"log"
 
-	"gitlab.com/auto-staging/stagectl/types"
+	"github.com/auto-staging/stagectl/types"
 )
 
 // PrintAPIError unmarshals the Tower API error body and prints the error message to console

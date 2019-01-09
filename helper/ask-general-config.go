@@ -6,8 +6,8 @@ import (
 	"os"
 	"strconv"
 
+	"github.com/auto-staging/stagectl/types"
 	input "github.com/tcnksm/go-input"
-	"gitlab.com/auto-staging/tower/types"
 )
 
 // AskForGeneralConfigUpdateInput sets the current general Repository configuration as default and asks the user for new (updated) values.

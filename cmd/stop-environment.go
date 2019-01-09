@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"os"
 
-	"gitlab.com/auto-staging/stagectl/model"
+	"github.com/auto-staging/stagectl/model"
 
-	"gitlab.com/auto-staging/tower/types"
+	"github.com/auto-staging/tower/types"
 
 	"github.com/spf13/cobra"
 )

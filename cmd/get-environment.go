@@ -6,10 +6,10 @@ import (
 	"net/url"
 	"os"
 
+	"github.com/auto-staging/stagectl/model"
+	"github.com/auto-staging/tower/types"
 	"github.com/olekukonko/tablewriter"
 	"github.com/spf13/cobra"
-	"gitlab.com/auto-staging/stagectl/model"
-	"gitlab.com/auto-staging/tower/types"
 	yaml "gopkg.in/yaml.v2"
 )
 
