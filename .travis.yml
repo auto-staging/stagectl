@@ -1,0 +1,39 @@
+stages:
+  - test
+
+  - name: release
+    if: branch = master AND type != pull_request
+
+  - name: build
+    if: branch = master AND type != pull_request
+
+jobs:
+  include:
+    - stage: test
+      language: go
+      go: 'stable'
+      script:
+        - make tests
+    
+    - stage: release
+      language: node_js
+      install:
+        - . $HOME/.nvm/nvm.sh
+        - nvm install stable
+        - nvm use stable
+        - npm install @semantic-release/changelog && npm install @semantic-release/git
+      script:
+        - npx semantic-release
+    
+    - stage: build
+      language: go
+      go: 'stable'
+      before_script:
+        # Use latest master version, which includes the git tag from the release step
+        - git checkout master
+      script:
+        - go get github.com/mitchellh/gox
+        - go get github.com/tcnksm/ghr
+        - make prepare
+        - gox -output "dist/{{.OS}}_{{.Arch}}_{{.Dir}}" -ldflags "-X github.com/auto-staging/stagectl/cmd.gitSha=`git rev-parse HEAD` -X github.com/auto-staging/stagectl/cmd.buildTime=$NOW -X github.com/auto-staging/stagectl/cmd.version=`git describe --abbrev=0 --tags`"
+        - ghr --username auto-staging --token $GITHUB_TOKEN --replace $(git describe --abbrev=0 --tags) dist/
