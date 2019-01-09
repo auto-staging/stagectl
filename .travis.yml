@@ -13,6 +13,7 @@ jobs:
       language: go
       go: 'stable'
       script:
+        - make prepare
         - make tests
     
     - stage: release
