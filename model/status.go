@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/auto-staging/tower/types"
 	"github.com/spf13/viper"
-	"gitlab.com/auto-staging/tower/types"
 )
 
 // GetAllStatus calls the Tower API - GET /repositories/environments/status.

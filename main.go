@@ -20,7 +20,7 @@
 
 package main
 
-import "gitlab.com/auto-staging/stagectl/cmd"
+import "github.com/auto-staging/stagectl/cmd"
 
 func main() {
 	cmd.Execute()

@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 
-	"gitlab.com/auto-staging/stagectl/helper"
+	"github.com/auto-staging/stagectl/helper"
 )
 
 func sendRequest(req *http.Request, expectedCode int) ([]byte, error) {

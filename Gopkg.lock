@@ -2,10 +2,16 @@
 
 
 [[projects]]
+  branch = "master"
+  name = "github.com/auto-staging/tower"
+  packages = ["types"]
+  revision = "3198d00cbcdb9177e5cba3163bc142a69e3aac6d"
+
+[[projects]]
   name = "github.com/aws/aws-lambda-go"
   packages = ["events"]
-  revision = "9e3676ee8ca83aee500682f382e10b9d03660093"
-  version = "v1.8.0"
+  revision = "928161204cad89472f9e6b5dd49ce16bc91230de"
+  version = "v1.8.1"
 
 [[projects]]
   name = "github.com/aws/aws-sdk-go"
@@ -24,8 +30,8 @@
     "private/protocol",
     "private/protocol/rest"
   ]
-  revision = "130ebb7dc1d6b5a940198b47642fc8b20936a65d"
-  version = "v1.16.1"
+  revision = "62936e15518acb527a1a9cb4a39d96d94d0fd9a2"
+  version = "v1.16.15"
 
 [[projects]]
   name = "github.com/fsnotify/fsnotify"
@@ -59,7 +65,7 @@
 [[projects]]
   name = "github.com/jmespath/go-jmespath"
   packages = ["."]
-  revision = "0b12d6b5"
+  revision = "c2b33e84"
 
 [[projects]]
   name = "github.com/magiconair/properties"
@@ -70,8 +76,8 @@
 [[projects]]
   name = "github.com/mattn/go-runewidth"
   packages = ["."]
-  revision = "ce7b0b5c7b45a81508558cd1dba6bb1e4ddb51bb"
-  version = "v0.0.3"
+  revision = "3ee7d812e62a0804a7d0a324e0249ca2db3476d3"
+  version = "v0.0.4"
 
 [[projects]]
   name = "github.com/mitchellh/go-homedir"
@@ -103,8 +109,8 @@
     ".",
     "mem"
   ]
-  revision = "d40851caa0d747393da1ffb28f7f9d8b4eeffebd"
-  version = "v1.1.2"
+  revision = "a5d6946387efe7d64d09dcba68cdd523dc1273a3"
+  version = "v1.2.0"
 
 [[projects]]
   name = "github.com/spf13/cast"
@@ -144,15 +150,9 @@
 
 [[projects]]
   branch = "master"
-  name = "gitlab.com/auto-staging/tower"
-  packages = ["types"]
-  revision = "9182aca8bbcfe12156a0a507aa5f91a88aa02de7"
-
-[[projects]]
-  branch = "master"
   name = "golang.org/x/crypto"
   packages = ["ssh/terminal"]
-  revision = "505ab145d0a99da450461ae2c1a9f6cd10d1f447"
+  revision = "ff983b9c42bc9fbf91556e191cc8efb585c16908"
 
 [[projects]]
   branch = "master"
@@ -161,7 +161,7 @@
     "unix",
     "windows"
   ]
-  revision = "70b957f3b65e069b4930ea94e2721eefa0f8f695"
+  revision = "7fbe1cd0fcc20051e1fcb87fbabec4a1bacaaeba"
 
 [[projects]]
   name = "golang.org/x/text"
@@ -185,6 +185,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "5f75bbf91c64f6c0eae0ed45918404fa1f7e61fcbdf63628af1f644f50d068fe"
+  inputs-digest = "1dc9d2bf9c1380902cc7de9e16ae59002572613fd7cb85e38bdf9881f080d19e"
   solver-name = "gps-cdcl"
   solver-version = 1

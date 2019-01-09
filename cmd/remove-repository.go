@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"gitlab.com/auto-staging/stagectl/model"
+	"github.com/auto-staging/stagectl/model"
 
 	"github.com/spf13/cobra"
 )

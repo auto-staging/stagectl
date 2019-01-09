@@ -26,7 +26,7 @@ import (
 	"net/url"
 	"os"
 
-	"gitlab.com/auto-staging/stagectl/model"
+	"github.com/auto-staging/stagectl/model"
 	yaml "gopkg.in/yaml.v2"
 
 	"github.com/olekukonko/tablewriter"

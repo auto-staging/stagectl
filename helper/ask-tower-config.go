@@ -5,7 +5,7 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/auto-staging/stagectl/types"
+	"github.com/auto-staging/tower/types"
 	input "github.com/tcnksm/go-input"
 )
 

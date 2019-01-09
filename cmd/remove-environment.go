@@ -5,8 +5,8 @@ import (
 	"net/url"
 	"os"
 
+	"github.com/auto-staging/stagectl/model"
 	"github.com/spf13/cobra"
-	"gitlab.com/auto-staging/stagectl/model"
 )
 
 func removeEnvironmentCmdFunc(cmd *cobra.Command, args []string) {
