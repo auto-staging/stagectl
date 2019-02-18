@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/auto-staging/stagectl/compare/1.0.1...1.1.0) (2019-02-18)
+
+
+### Features
+
+* added support for webhookSecretToken tower config variable ([b681baf](https://github.com/auto-staging/stagectl/commit/b681baf))
+
 ## [1.0.1](https://github.com/auto-staging/stagectl/compare/1.0.0...1.0.1) (2019-01-09)
 
 
