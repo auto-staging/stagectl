@@ -29,4 +29,13 @@ func AskForTowerConfigUpdateInput(config *types.TowerConfiguration) {
 		log.Fatal(err)
 	}
 	config.LogLevel = levelValue
+
+	query = "WebhookSecretToken"
+	webhookSecretToken, err := ui.Ask(query, &input.Options{
+		Default: config.WebhookSecretToken,
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
+	config.WebhookSecretToken = webhookSecretToken
 }
