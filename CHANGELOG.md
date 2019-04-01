@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/auto-staging/stagectl/compare/1.1.0...1.2.0) (2019-04-01)
+
+
+### Features
+
+* loading aws credentials from the environment ([f6ce0dd](https://github.com/auto-staging/stagectl/commit/f6ce0dd))
+
 # [1.1.0](https://github.com/auto-staging/stagectl/compare/1.0.1...1.1.0) (2019-02-18)
 
 
