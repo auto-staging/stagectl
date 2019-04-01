@@ -73,7 +73,14 @@ The file has the following format. Replace all values with the values matching y
 }
 ```
 
-## Usage
+## Installation
+
+1. Download latest release binary from the [release page]([https://link](https://github.com/auto-staging/stagectl/releases))
+2. Move the downloaded binary to your /usr/local/bin or /usr/bin folder
+3. Rename the binary file to stagectl and make it executable ```chmod +x stagectl```
+4. Start using stagectl
+
+## Development
 
 ### Install dependencies
 
