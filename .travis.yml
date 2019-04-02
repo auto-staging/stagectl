@@ -37,6 +37,8 @@ jobs:
         # Setup dependency management tool (go dep)
         - curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
         - chmod +x $GOPATH/bin/dep
+        # Install Python 3
+        - apt-get install python3 python3-pip -y
         # Use latest master version, which includes the git tag from the release step
         - git checkout master
       script:
@@ -46,3 +48,11 @@ jobs:
         - NOW=$(date +'%Y-%m-%d_%T')
         - gox -output "dist/{{.OS}}_{{.Arch}}_{{.Dir}}" -ldflags "-X github.com/auto-staging/stagectl/cmd.gitSha=`git rev-parse HEAD` -X github.com/auto-staging/stagectl/cmd.buildTime=$NOW -X github.com/auto-staging/stagectl/cmd.version=`git describe --abbrev=0 --tags`" -arch="amd64 386" -os="linux darwin windows"
         - ghr --username auto-staging --token $GITHUB_TOKEN --replace $(git describe --abbrev=0 --tags) dist/
+        # Create new Homebrew formula
+        - export FILE_HASH=`sha256sum dist/darwin_amd64_stagectl | awk '{print $1}'`
+        - export VERSION=`git describe --abbrev=0 --tags`
+        - git clone https://${GITHUB_TOKEN}@github.com/auto-staging/homebrew-stagectl.git
+        - cd homebrew-stagectl
+        - pip3 install jinja2
+        - python3 generateFormula.py
+        - 'git add stagectl.rb && git commit -m "chore: deployment of version $VERSION - $NOW" && git push'
