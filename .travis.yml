@@ -53,6 +53,6 @@ jobs:
         - export VERSION=`git describe --abbrev=0 --tags`
         - git clone https://${GITHUB_TOKEN}@github.com/auto-staging/homebrew-stagectl.git
         - cd homebrew-stagectl
-        - pip3 install jinja2
+        - pip3 install --user jinja2
         - python3 generateFormula.py
         - 'git add stagectl.rb && git commit -m "chore: deployment of version $VERSION - $NOW" && git push'
