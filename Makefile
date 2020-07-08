@@ -1,6 +1,6 @@
 
 prepare:
-	dep ensure -v
+	go get -v
 
 build: prepare
 	NOW=$(date +'%Y-%m-%d_%T') && \
