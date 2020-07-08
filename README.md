@@ -88,6 +88,12 @@ The file has the following format. Replace all values with the values matching y
 make prepare
 ```
 
+### Update dependencies
+
+```bash
+go get -u
+```
+
 ### Build binary
 
 ```bash
